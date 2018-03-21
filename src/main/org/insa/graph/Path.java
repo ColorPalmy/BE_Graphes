@@ -203,7 +203,7 @@ public class Path {
     		} else {
         		Node temp;
         		temp = this.arcs.get(0).getDestination();
-        		for (int i = 1; i < this.arcs.size()-1; i++) {
+        		for (int i = 1; i < this.arcs.size(); i++) {
         			if (this.arcs.get(i).getOrigin() != temp) {
         				return false;
         			} else {
@@ -236,12 +236,13 @@ public class Path {
      * 
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
-     * 
-     * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+    	if (speed == 0) {
+    		return 0;
+    	} else {
+    		return (this.getLength()/(speed*1000/3600));
+    	}
     }
 
     /**
@@ -249,12 +250,17 @@ public class Path {
      * on every arc.
      * 
      * @return Minimum travel time to travel this path (in seconds).
-     * 
-     * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+    	if (this.arcs.isEmpty()) {
+    		return 0;
+    	} else {
+    		double time = 0;
+    		for (int i = 0; i<this.arcs.size(); i++) {
+    			time = time + this.arcs.get(i).getMinimumTravelTime();
+    		}
+    		return time;
+    	}
     }
 
 }
