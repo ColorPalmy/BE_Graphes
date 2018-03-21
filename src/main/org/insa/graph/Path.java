@@ -196,7 +196,7 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
+        // TODO :
         return false;
     }
 
@@ -204,12 +204,14 @@ public class Path {
      * Compute the length of this path (in meters).
      * 
      * @return Total length of the path (in meters).
-     * 
-     * @deprecated Need to be implemented.
      */
+    
     public float getLength() {
-        // TODO:
-        return 0;
+    	float sommelength = 0;
+    	for (int k = 0; k < this.arcs.size(); k++) {
+    		sommelength += this.arcs.get(k).getLength();
+    	}
+        return sommelength;
     }
 
     /**
