@@ -42,22 +42,23 @@ public class Path {
         	
         	for (int i = 0; i<(nodes.size()-1); i++) {
         		Node node = nodes.get(i);
-        		//find the node in the graph
+        		//Find the node in the graph
         		j = graphNodes.indexOf(node);
         		if (j==-1) {
         			IllegalArgumentException e = new IllegalArgumentException();
         			throw e;
         		}
-        		//get the list of successors of the node
+        		//Get the list of successors of the node
         		succes = graphNodes.get(j).getSuccessors();
-        		//consecutive node
+        		//Consecutive node
         		Node nextNode = nodes.get(i+1);
+        		
 				if (succes.isEmpty()) {
         			IllegalArgumentException e = new IllegalArgumentException();
         			throw e;
         		}
 				Arc tmp = null;
-				//search for the arc linking the consecutive nodes with the shortest travel time
+				//Searching for the arc linking the consecutive nodes with the shortest travel time
 				for (Arc arc : succes) {
 					if ((arc.getOrigin() == node) && (arc.getDestination()== nextNode)) {
 						if (tmp == null) {
@@ -71,7 +72,7 @@ public class Path {
         			IllegalArgumentException e = new IllegalArgumentException();
         			throw e;
 				}
-				//add the found arc to the arcs of the path
+				//Adding the found arc to the arcs of the path
 				arcs.add(tmp);
         	}
         	return new Path(graph, arcs);
@@ -89,14 +90,58 @@ public class Path {
      * 
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
-     * 
-     * @deprecated Need to be implemented.
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+    	List<Arc> arcs = new ArrayList<Arc>();
+        if (nodes.isEmpty()) {
+        	return new Path(graph, arcs);
+        } else if (nodes.size()<2) {
+        	return new Path(graph,nodes.get(0));
+        } else {
+        List<Arc> successors;
+    	int j;
+    	List<Node> graphNodes = graph.getNodes();
+    	
+    	for (int i = 0; i<(nodes.size()-1); i++) {
+    		Node node = nodes.get(i);
+    		
+    		j = graphNodes.indexOf(node);
+    		if (j == -1) {
+    			IllegalArgumentException e = new IllegalArgumentException();
+    			throw e;
+    		}
+    		
+    		//Get the list of successors of the node
+    		successors = graphNodes.get(j).getSuccessors();
+    		//Consecutive node
+    		Node nextNode = nodes.get(i+1);
+    		
+			if (successors.isEmpty()) {
+    			IllegalArgumentException e = new IllegalArgumentException();
+    			throw e;
+    		}
+			
+			Arc tmp = null;
+			//search for the arc linking the consecutive nodes with the shortest travel time
+			for (Arc arc : successors) {
+				if ((arc.getOrigin() == node) && (arc.getDestination()== nextNode)) {
+					if (tmp == null) {
+						tmp = arc;
+					} else if (arc.getLength() < tmp.getLength()) {
+						tmp = arc;
+					}
+				}
+			}
+			if (tmp == null) {
+    			IllegalArgumentException e = new IllegalArgumentException();
+    			throw e;
+			}
+			//Adding the found arc to the arcs of the path
+			arcs.add(tmp);
+    	}
         return new Path(graph, arcs);
+        }
     }
 
     /**
