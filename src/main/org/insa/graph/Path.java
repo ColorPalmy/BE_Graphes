@@ -11,6 +11,7 @@ import java.util.List;
  * due to the multigraph nature of the considered graphs.
  *
  */
+
 public class Path {
 
     /**
