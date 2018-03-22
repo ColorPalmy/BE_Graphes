@@ -25,13 +25,56 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+    	List<Arc> arcs = new ArrayList<Arc>();
+        if (nodes.isEmpty()) {
+        	return new Path(graph, arcs);
+        } else if (nodes.size()<2) {
+        	return new Path(graph,nodes.get(0));
+        } else {
+        	
+        	List<Arc> succes;
+        	int j;
+        	List<Node> graphNodes = graph.getNodes();
+        	
+        	for (int i = 0; i<(nodes.size()-1); i++) {
+        		Node node = nodes.get(i);
+        		//find the node in the graph
+        		j = graphNodes.indexOf(node);
+        		if (j==-1) {
+        			IllegalArgumentException e = new IllegalArgumentException();
+        			throw e;
+        		}
+        		//get the list of successors of the node
+        		succes = graphNodes.get(j).getSuccessors();
+        		//consecutive node
+        		Node nextNode = nodes.get(i+1);
+				if (succes.isEmpty()) {
+        			IllegalArgumentException e = new IllegalArgumentException();
+        			throw e;
+        		}
+				Arc tmp = null;
+				//search for the arc linking the consecutive nodes with the shortest travel time
+				for (Arc arc : succes) {
+					if ((arc.getOrigin() == node) && (arc.getDestination()== nextNode)) {
+						if (tmp == null) {
+							tmp = arc;
+						} else if (arc.getMinimumTravelTime() <tmp.getMinimumTravelTime()) {
+							tmp = arc;
+						}
+					}
+				}
+				if (tmp == null) {
+        			IllegalArgumentException e = new IllegalArgumentException();
+        			throw e;
+				}
+				//add the found arc to the arcs of the path
+				arcs.add(tmp);
+        	}
+        	return new Path(graph, arcs);
+        }
     }
 
     /**
