@@ -144,7 +144,40 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
 
     @Override
     public void remove(E x) throws ElementNotFoundException {
-        // TODO:
+    	if (this.isEmpty()) {
+    		throw new ElementNotFoundException(x);
+    	} else {
+    		boolean found = false;
+    		int i = 0;
+    		int index = -1;
+    		// TODO: quand Dijkstra marche, remplacer le while par la fonction indexOf()
+    		while ((!found) && (i<this.currentSize) ) {
+    			if (this.array.get(i) == x) {
+    				found = true;
+    				index = i;
+    			}
+    			i= i+1;
+    		}
+//    		System.out.println("element "+ x + " " + found + " index = " + index + "i = "+ i );
+//    		index = this.array.indexOf(x);
+    		if ((!found) || (index==-1)) {
+//    		if(index == -1) {
+    			throw new ElementNotFoundException(x);
+        	} else {
+        		if (index == (this.currentSize-1)) {
+        			this.array.remove(index);
+        			this.currentSize = this.currentSize -1;
+        		} else if (index == 0) {
+        			this.deleteMin();
+        		} else {
+        			E lastElem = this.array.get(this.currentSize-1);
+        			this.array.set(index, lastElem);
+        			this.currentSize = this.currentSize -1;
+        			this.percolateDown(index);
+        			this.percolateUp(index);
+        		}
+    		}
+    	}
     }
 
     @Override
@@ -161,6 +194,20 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         this.arraySet(0, lastItem);
         this.percolateDown(0);
         return minItem;
+    }
+    
+    @Override
+    public String toString() {
+
+    	String tas = "========  Sorted HEAP  (size = " + this.currentSize + ")  ========";
+    	
+        for (int i = 0; i < this.currentSize; i++) {
+            tas+= " " + this.array.get(i).toString()+ " ";
+        }
+    	
+        tas.concat("--------  End of heap  --------");
+    	
+        return tas;
     }
 
     /**
