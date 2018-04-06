@@ -56,8 +56,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	
         	stillExistNotMarked = false;
         	
-        	lx = tas.findMin();
-        	x = tas.findMin().getNode();
+//        	lx = tas.findMin();
+//        	x = tas.findMin().getNode();
+        	lx = tas.deleteMin();
+        	x = lx.getNode();
         	
         	lx.setMarked(true);
         	System.out.println("node markee " + x.getId());
@@ -73,6 +75,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         			
         			oldCost = ly.getCout();
         			newCost = Math.min(oldCost, lx.getCout()+data.getCost(arc));
+        			System.out.println("old cost "+ oldCost + " other cost " + (lx.getCout()+data.getCost(arc)) + " new cost "+ newCost);
         			ly.setCout(newCost);
         			
         			if (newCost != oldCost) {
