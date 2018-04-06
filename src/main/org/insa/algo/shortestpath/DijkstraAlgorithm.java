@@ -1,7 +1,6 @@
 package org.insa.algo.shortestpath;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.insa.algo.AbstractSolution.Status;
@@ -47,7 +46,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 		boolean stillExistNotMarked = true;
 		Node x;
-		Node y;
 		Label lx;
 		Label ly;
 		double oldCost, newCost;
@@ -62,22 +60,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 				lx.setMarked(true);
 
-				System.out.println("node markee " + x.getId());
-
 				for(Arc arc: x) {
-
 					ly = marks[arc.getDestination().getId()];
-					y = marks[arc.getDestination().getId()].getNode();
-
 					if (!ly.isMarked()) {
-
 						stillExistNotMarked = true;
-
 						oldCost = ly.getCout();
 						newCost = Math.min(oldCost, lx.getCout()+data.getCost(arc));
-						System.out.println("old cost "+ oldCost + " other cost " + (lx.getCout()+data.getCost(arc)) + " new cost "+ newCost);
+						//System.out.println("old cost "+ oldCost + " other cost " + (lx.getCout()+data.getCost(arc)) + " new cost "+ newCost);
 						ly.setCout(newCost);
-
 						if (newCost != oldCost) {
 							tas.insert(ly);
 							predecessorArcs[arc.getDestination().getId()] = arc;
@@ -93,8 +83,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			}
 
 		}
-		System.out.println("sorti du while");
-
 		ShortestPathSolution solution = null;
 
 		// Destination has no predecessor, the solution is infeasible...
