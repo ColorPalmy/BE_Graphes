@@ -13,106 +13,114 @@ import org.insa.graph.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
-    public DijkstraAlgorithm(ShortestPathData data) {
-        super(data);
-    }
+	public DijkstraAlgorithm(ShortestPathData data) {
+		super(data);
+	}
 
-    @Override
-    protected ShortestPathSolution doRun() {
-    	
-    	// Retrieve the graph.
-    	ShortestPathData data = getInputData();
-    	Graph graph = data.getGraph();
-    	
+	@Override
+	protected ShortestPathSolution doRun() {
+
+		// Retrieve the graph.
+		ShortestPathData data = getInputData();
+		Graph graph = data.getGraph();
+
 		final int nbNodes = graph.size();
-		
+
 		// Initialize array of labels.
 		Label[] marks = new Label[nbNodes];
 		for (Node node: graph) {
 			marks[node.getId()]= new Label(node);
 		}
 		marks[data.getOrigin().getId()].setCout(0.0);
-		
+
 		// Initialize array of predecessors.
 		Arc[] predecessorArcs = new Arc[nbNodes];
-		
+
 		//Creation of the BinaryHeap of Labels.
 		BinaryHeap<Label> tas = new BinaryHeap<Label>();
-		
+
 		// Notify observers about the first event (origin processed).
 		notifyOriginProcessed(data.getOrigin());
-		
+
 		//Insertion du sommet initial dans le tas
 		tas.insert(marks[data.getOrigin().getId()]);
-        
-        boolean stillExistNotMarked = true;
-        Node x;
-        Node y;
-        Label lx;
-        Label ly;
-        double oldCost, newCost;
-        
-        while(stillExistNotMarked) {
-        	
-        	stillExistNotMarked = false;
-        	
-//        	lx = tas.findMin();
-//        	x = tas.findMin().getNode();
-        	lx = tas.deleteMin();
-        	x = lx.getNode();
-        	
-        	lx.setMarked(true);
-        	System.out.println("node markee " + x.getId());
-        	
-        	for(Arc arc: x) {
-        		
-        		ly = marks[arc.getDestination().getId()];
-        		y = marks[arc.getDestination().getId()].getNode();
-        		
-        		if (!ly.isMarked()) {
-        			
-        			stillExistNotMarked = true;
-        			
-        			oldCost = ly.getCout();
-        			newCost = Math.min(oldCost, lx.getCout()+data.getCost(arc));
-        			System.out.println("old cost "+ oldCost + " other cost " + (lx.getCout()+data.getCost(arc)) + " new cost "+ newCost);
-        			ly.setCout(newCost);
-        			
-        			if (newCost != oldCost) {
-        				tas.insert(ly);
-        				predecessorArcs[arc.getDestination().getId()] = arc;
-        			}
-        		}
-        	}
-        }
-        System.out.println("sorti du while");
-        
-        ShortestPathSolution solution = null;
-        
-     // Destination has no predecessor, the solution is infeasible...
-     		if (predecessorArcs[data.getDestination().getId()] == null) {
-     			solution = new ShortestPathSolution(data, Status.INFEASIBLE);
-     		} else {
 
-     			// The destination has been found, notify the observers.
-     			notifyDestinationReached(data.getDestination());
+		boolean stillExistNotMarked = true;
+		Node x;
+		Node y;
+		Label lx;
+		Label ly;
+		double oldCost, newCost;
 
-     			// Create the path from the array of predecessors...
-     			ArrayList<Arc> arcs = new ArrayList<>();
-     			Arc arc = predecessorArcs[data.getDestination().getId()];
-     			while (arc != null) {
-     				arcs.add(arc);
-     				arc = predecessorArcs[arc.getOrigin().getId()];
-     			}
+		//Loop while all the nodes are not marked
+		while(stillExistNotMarked) {
 
-     			// Reverse the path...
-     			Collections.reverse(arcs);
+			stillExistNotMarked = false;
+			if (!tas.isEmpty()) {
+				lx = tas.deleteMin();
+				x = lx.getNode();
 
-     			// Create the final solution.
-     			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
-     		}
+				lx.setMarked(true);
 
-        return solution;
-    }
+				System.out.println("node markee " + x.getId());
+
+				for(Arc arc: x) {
+
+					ly = marks[arc.getDestination().getId()];
+					y = marks[arc.getDestination().getId()].getNode();
+
+					if (!ly.isMarked()) {
+
+						stillExistNotMarked = true;
+
+						oldCost = ly.getCout();
+						newCost = Math.min(oldCost, lx.getCout()+data.getCost(arc));
+						System.out.println("old cost "+ oldCost + " other cost " + (lx.getCout()+data.getCost(arc)) + " new cost "+ newCost);
+						ly.setCout(newCost);
+
+						if (newCost != oldCost) {
+							tas.insert(ly);
+							predecessorArcs[arc.getDestination().getId()] = arc;
+						}
+					}
+				}
+				for (Node node: graph) {
+					if (!marks[node.getId()].isMarked()) {
+						stillExistNotMarked = true;
+						break;
+					}
+				}
+			}
+
+		}
+		System.out.println("sorti du while");
+
+		ShortestPathSolution solution = null;
+
+		// Destination has no predecessor, the solution is infeasible...
+		if (predecessorArcs[data.getDestination().getId()] == null) {
+			solution = new ShortestPathSolution(data, Status.INFEASIBLE);
+		} else {
+
+			// The destination has been found, notify the observers.
+			notifyDestinationReached(data.getDestination());
+
+			// Create the path from the array of predecessors...
+			ArrayList<Arc> arcs = new ArrayList<>();
+			Arc arc = predecessorArcs[data.getDestination().getId()];
+			while (arc != null) {
+				arcs.add(arc);
+				arc = predecessorArcs[arc.getOrigin().getId()];
+			}
+
+			// Reverse the path...
+			Collections.reverse(arcs);
+
+			// Create the final solution.
+			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+		}
+
+		return solution;
+	}
 
 }
