@@ -30,7 +30,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		// Initialize array of labels.
 		Label[] marks = new Label[nbNodes];
 		for (Node node: graph) {
-			marks[node.getId()]= new Label(node);
+			marks[node.getId()] = new Label(node);
 		}
 		marks[data.getOrigin().getId()].setCout(0.0);
 
@@ -51,17 +51,19 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		Label lx;
 		Label ly;
 		double oldCost, newCost;
+		int iteration = 0;
+		int nombredejeannedarc = 0;
 
 		//Loop while all the nodes are not marked
 		while(stillExistNotMarked) {
-
+			iteration++;
 			stillExistNotMarked = false;
 			if (!tas.isEmpty()) {
 				lx = tas.deleteMin();
 				x = lx.getNode();
 				notifyNodeMarked(x);
 				lx.setMarked(true);
-				System.out.println(lx.getCout());
+				//System.out.println(lx.getCout());
 
 				for(Arc arc: x) {
 					ly = marks[arc.getDestination().getId()];
@@ -89,6 +91,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			}
 
 		}
+		
 		ShortestPathSolution solution = null;
 
 		// Destination has no predecessor, the solution is infeasible...
@@ -104,6 +107,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			Arc arc = predecessorArcs[data.getDestination().getId()];
 			while (arc != null) {
 				arcs.add(arc);
+				nombredejeannedarc++;
 				arc = predecessorArcs[arc.getOrigin().getId()];
 			}
 
@@ -113,6 +117,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			// Create the final solution.
 			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
 		}
+		
+		System.out.println("Nombre de nodes : " + nbNodes);
+		System.out.println("Nombre d'itérations : " + iteration);
+		System.out.println("Nombre de Jeanne d'Arc : " + nombredejeannedarc);
 
 		return solution;
 	}
