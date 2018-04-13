@@ -12,6 +12,7 @@ import org.insa.graph.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
+	//TODO En velo: vérifier les restrictions pour les arcs
 	public DijkstraAlgorithm(ShortestPathData data) {
 		super(data);
 	}
