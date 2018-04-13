@@ -18,6 +18,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	}
 
 	@Override
+	//O((n+m)log(n))
 	protected ShortestPathSolution doRun() {
 
 		// Retrieve the graph.
@@ -58,7 +59,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			if (!tas.isEmpty()) {
 				lx = tas.deleteMin();
 				x = lx.getNode();
-				notifyNodeReached(x);
+				notifyNodeMarked(x);
 				lx.setMarked(true);
 
 				for(Arc arc: x) {
@@ -72,6 +73,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 						if (newCost != oldCost) {
 							tas.insert(ly);
 							predecessorArcs[arc.getDestination().getId()] = arc;
+						}
+						if (Double.isInfinite(oldCost) && Double.isFinite(newCost)) {
+							notifyNodeReached(ly.getNode());
 						}
 					}
 				}
