@@ -58,7 +58,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			if (!tas.isEmpty()) {
 				lx = tas.deleteMin();
 				x = lx.getNode();
-
+				notifyNodeReached(x);
 				lx.setMarked(true);
 
 				for(Arc arc: x) {
