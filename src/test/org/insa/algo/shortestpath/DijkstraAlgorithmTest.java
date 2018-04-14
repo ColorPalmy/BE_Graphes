@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.insa.algo.ArcInspector;
+import org.insa.algo.shortestpath.BellmanFordAlgorithm;
+import org.insa.algo.shortestpath.DijkstraAlgorithm;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
 import org.insa.graph.RoadInformation;
@@ -68,7 +71,6 @@ public class DijkstraAlgorithmTest {
                 new ArrayList<>());
         
         graph = new Graph("ID", "", Arrays.asList(nodes), null);
-
     }
 
 	
@@ -76,5 +78,22 @@ public class DijkstraAlgorithmTest {
 	public void test() {
 		fail("Not yet implemented");
 	}
+	
+	@Test
+    public void BellmanDijkstraSameShortestPath() {
+		
+		//Generate pairs
+		for (int i = 0; i < nodes.length; ++i) {
+			for (int j = 0; j < nodes.length; ++j) {
+				if (i != j) {
+					ShortestPathData testdata = new ShortestPathData(graph, nodes[i], nodes[j], new ArcInspector(NULL));
+					int r = assertArrayEquals(DijkstraAlgorithm(testdata), BellmanFordAlgorithm(testdata));
+		            if (r == 0) {
+		            	fail("Different shortest paths from DijkstraAlgorithm and BellmanFordAlgorithm.");
+		            }
+				}
+	        }
+		}
+    }
 
 }

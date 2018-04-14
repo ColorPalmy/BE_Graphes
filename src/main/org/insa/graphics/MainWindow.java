@@ -82,7 +82,7 @@ public class MainWindow extends JFrame {
     /**
      * 
      */
-    private static final String WINDOW_TITLE = "BE Graphes INSA";
+    private static String WINDOW_TITLE = "BE Graphes INSA";
 
     /**
      * 
@@ -151,7 +151,7 @@ public class MainWindow extends JFrame {
         this.mapViewDrawing = new MapViewDrawing();
         this.drawing = basicDrawing;
 
-        // Createa palettes
+        // Create palettes
         this.basicPalette = new BasicGraphPalette();
         this.blackAndWhitePalette = new BlackAndWhiteGraphPalette();
         this.currentPalette = this.basicPalette;
@@ -259,7 +259,7 @@ public class MainWindow extends JFrame {
                 true);
 
         psPanel = new AlgorithmPanel(this, PackageSwitchAlgorithm.class, "Car-Pooling",
-                new String[]{ "Oribin A", "Origin B", "Destination A", "Destination B" }, true);
+                new String[]{ "Origin A", "Origin B", "Destination A", "Destination B" }, true);
 
         // add algorithm panels
         algoPanels.add(wccPanel);
@@ -306,11 +306,12 @@ public class MainWindow extends JFrame {
                                 "Cannot open the selected file.");
                         return;
                     }
+                    WINDOW_TITLE = "BE Graphes INSA - Map : " + chooser.getSelectedFile().getName();
                     loadGraph(new BinaryGraphReader(stream));
                 }
             }
         };
-
+        
         setJMenuBar(createMenuBar(openMapActionListener));
 
         // Initial panel to show "Open Map... "
@@ -327,7 +328,7 @@ public class MainWindow extends JFrame {
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 int confirmed = JOptionPane.showConfirmDialog(MainWindow.this,
-                        "Are you sure you want to close the application?", "Exit Confirmation",
+                        "Are you sure you want to close the application ?", "Exit Confirmation",
                         JOptionPane.YES_NO_OPTION);
 
                 if (confirmed == JOptionPane.YES_OPTION) {
@@ -571,6 +572,7 @@ public class MainWindow extends JFrame {
     }
 
     private void loadGraph(GraphReader reader) {
+    	setTitle(WINDOW_TITLE);
         launchThread(new Runnable() {
             @Override
             public void run() {

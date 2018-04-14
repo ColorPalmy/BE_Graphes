@@ -43,23 +43,24 @@ public class Launch {
     }
 
     public static void main(String[] args) throws Exception {
-
-        // Visit these directory to see the list of available files on Commetud.
-
+    	/*
         String mapName  = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes\\insa.mapgr";
         String pathName = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes\\path_fr31insa_rangueil_r2.path";
-
-        /*
+        */
         String mapName  = "B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes\\maps\\insa.mapgr";
         String pathName = "B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes\\paths\\path_fr31insa_rangueil_r2.path";
-        */
+        
 
         // Create a graph reader.
         GraphReader reader = new BinaryGraphReader(
                 new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
-
+        
+        System.out.println("Graph Reading started.");
+        
         //Read the graph.
         Graph graph = reader.read();
+        
+        System.out.println("Graph Reading ended.");
 
         // Create the drawing:
         Drawing drawing = createDrawing();
