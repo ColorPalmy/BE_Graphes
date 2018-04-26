@@ -118,9 +118,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
 		}
 		
-		System.out.println("Nombre de nodes : " + nbNodes);
-		System.out.println("Nombre d'itérations : " + iteration);
-		System.out.println("Nombre de Jeanne d'Arc : " + nombredejeannedarc);
+//		System.out.println("Nombre de nodes : " + nbNodes);
+//		System.out.println("Nombre d'itérations : " + iteration);
+//		System.out.println("Nombre de Jeanne d'Arc : " + nombredejeannedarc);
 
 		return solution;
 	}

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.insa.algo.ArcInspector;
+import org.insa.algo.ArcInspectorFactory;
 import org.insa.algo.shortestpath.BellmanFordAlgorithm;
 import org.insa.algo.shortestpath.DijkstraAlgorithm;
 import org.insa.graph.Graph;
@@ -72,27 +73,43 @@ public class DijkstraAlgorithmTest {
         
         graph = new Graph("ID", "", Arrays.asList(nodes), null);
     }
-
-	
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
 	
 	@Test
     public void BellmanDijkstraSameShortestPath() {
-		
+		String s = "";
 		//Generate pairs
 		for (int i = 0; i < nodes.length; ++i) {
 			for (int j = 0; j < nodes.length; ++j) {
 				if (i != j) {
-					ShortestPathData testdata = new ShortestPathData(graph, nodes[i], nodes[j], new ArcInspector(NULL));
-					int r = assertArrayEquals(DijkstraAlgorithm(testdata), BellmanFordAlgorithm(testdata));
-		            if (r == 0) {
-		            	fail("Different shortest paths from DijkstraAlgorithm and BellmanFordAlgorithm.");
-		            }
+					ShortestPathData testdata = new ShortestPathData(graph, nodes[i], nodes[j], ArcInspectorFactory.getAllFilters().get(0));
+					
+					ShortestPathAlgorithm dijkstraAlgo = new DijkstraAlgorithm(testdata);
+					ShortestPathAlgorithm bellmanAlgo = new BellmanFordAlgorithm(testdata);
+					
+					ShortestPathSolution dijkstraSolution = dijkstraAlgo.doRun();
+					ShortestPathSolution bellmanSolution = bellmanAlgo.doRun();
+					
+					//Check if both solutions are feasible or unfeasible
+					assertEquals(dijkstraSolution.isFeasible(), bellmanSolution.isFeasible());
+					
+					if (dijkstraSolution.isFeasible() && bellmanSolution.isFeasible()) {
+						//Check if both paths are valid
+						assertEquals(dijkstraSolution.getPath().isValid(), bellmanSolution.getPath().isValid());
+						//Check if both paths have the same length
+						assertEquals(dijkstraSolution.getPath().getLength(), bellmanSolution.getPath().getLength(), 1e-6);
+						//Check if both paths have the same size
+						assertEquals(dijkstraSolution.getPath().size(), bellmanSolution.getPath().size());
+						s += dijkstraSolution.getPath().getLength() + " ";
+					} else {
+						s+= "inf ";
+					}
+					
+				} else {
+					s+= "- ";
 				}
 	        }
+			System.out.println(s);
+			s="";
 		}
     }
 
