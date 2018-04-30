@@ -97,6 +97,8 @@ public class DijkstraAlgorithmTest {
 						assertEquals(dijkstraSolution.getPath().isValid(), bellmanSolution.getPath().isValid());
 						//Check if both paths have the same length
 						assertEquals(dijkstraSolution.getPath().getLength(), bellmanSolution.getPath().getLength(), 1e-6);
+						//Check if both paths take the same time
+						assertEquals(dijkstraSolution.getPath().getMinimumTravelTime(), bellmanSolution.getPath().getMinimumTravelTime(), 1e-6);
 						//Check if both paths have the same size
 						assertEquals(dijkstraSolution.getPath().size(), bellmanSolution.getPath().size());
 						s += dijkstraSolution.getPath().getLength() + " ";

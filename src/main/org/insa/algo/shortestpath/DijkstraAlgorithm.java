@@ -66,6 +66,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				//System.out.println(lx.getCout());
 
 				for(Arc arc: x) {
+					if (!data.isAllowed(arc)) {
+						continue;
+					}
 					ly = marks[arc.getDestination().getId()];
 					if (!ly.isMarked()) {
 						stillExistNotMarked = true;
