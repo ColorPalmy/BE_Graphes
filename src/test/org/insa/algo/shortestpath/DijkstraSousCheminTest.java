@@ -3,10 +3,13 @@ package org.insa.algo.shortestpath;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.util.List;
 
 import org.insa.algo.ArcInspectorFactory;
 import org.insa.algo.AbstractInputData.Mode;
+import org.insa.graph.Arc;
 import org.insa.graph.Graph;
+import org.insa.graph.Node;
 import org.insa.graph.Path;
 import org.insa.graph.io.BinaryGraphReader;
 import org.insa.graph.io.BinaryPathReader;
@@ -28,18 +31,14 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 
 		//System.out.println("Graph Reading ended.");
 
-		//Create a PathReader.
+		//Create a PathReader and a SubPathReader.
 		PathReader pathReader = new BinaryPathReader(
 				new DataInputStream(new BufferedInputStream(new FileInputStream(pathName))));
-
-		//Read the path.
-		Path path = pathReader.readPath(graph);
-		
-		//Create a SubPathReader.
 		PathReader subpathReader = new BinaryPathReader(
 				new DataInputStream(new BufferedInputStream(new FileInputStream(subpathName))));
-		
-		//Read the subpath.
+
+		//Read the path and the sub path.
+		Path path = pathReader.readPath(graph);
 		Path subpath = subpathReader.readPath(graph);
 		
 		//Create the scenario
@@ -52,14 +51,6 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 		} else if (scenario.getType() == Mode.LENGTH) {
 			 testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(0));
 		}
-		
-		//Create the algorithms
-		ShortestPathAlgorithm dijkstraAlgo = new DijkstraAlgorithm(testdata);
-		
-		//Create the solutions
-		ShortestPathSolution dijkstraSolution = dijkstraAlgo.doRun();
-		
-		//Create the data for the algorithms
 		ShortestPathData subtestdata = null;
 		if (scenario.getType() == Mode.TIME) {
 			 subtestdata = new ShortestPathData(graph, subpath.getOrigin(), subpath.getDestination(), ArcInspectorFactory.getAllFilters().get(2));
@@ -67,32 +58,65 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 			 subtestdata = new ShortestPathData(graph, subpath.getOrigin(), subpath.getDestination(), ArcInspectorFactory.getAllFilters().get(0));
 		}
 		
-		//Create the algorithms
-		ShortestPathAlgorithm dijkstraSubAlgo = new DijkstraAlgorithm(subtestdata);
 		
+		//Create the algorithms
+		ShortestPathAlgorithm dijkstraAlgo = new DijkstraAlgorithm(testdata);
+		ShortestPathAlgorithm dijkstraSubAlgo = new DijkstraAlgorithm(subtestdata);
+
 		//Create the solutions
+		ShortestPathSolution dijkstraSolution = dijkstraAlgo.doRun();
 		ShortestPathSolution dijkstraSubSolution = dijkstraSubAlgo.doRun();
 
 		//Get the shortest paths
 		Path dPath = dijkstraSolution.getPath();
 		Path sdPath = dijkstraSubSolution.getPath();
 		
-		if (scenario.getType() == Mode.TIME) {
-			System.out.println("Time Path: " + dPath.getMinimumTravelTime() + " Time Sub Path: " + sdPath.getMinimumTravelTime());
-		} else if (scenario.getType() == Mode.LENGTH) {
-			System.out.println("Length Path: " + dPath.getLength() + " Length Sub Path: " + sdPath.getLength());
+		List<Arc> pathArcs = dPath.getArcs();
+//		int debut = pathArcs.indexOf(sdPath.getArcs().get(0));
+		int debut = -1;
+		int i = 0;
+		for (Arc arc: dPath.getArcs()) {
+			if ((arc.getOrigin().getId() == sdPath.getArcs().get(0).getOrigin().getId()) && (arc.getDestination().getId() == sdPath.getArcs().get(0).getDestination().getId())) {
+				debut = i;
+				break;
+			}
+			i++;
 		}
 		
+		if( debut == -1) {
+			throw new Exception("the origin of the sub path is not in the path");
+		} else {
+			boolean same = true;
+			for (Arc arc: sdPath.getArcs()) {
+				if ((arc.getOrigin().getId() != pathArcs.get(debut).getOrigin().getId()) || (arc.getDestination().getId() != pathArcs.get(debut).getDestination().getId())) {
+					same = false;
+					break;
+				}
+				debut = debut + 1;
+			}
+			if (same) {
+				System.out.println("The sub path is a shortest path");
+			} else {
+				System.out.println("The sub path is NOT shortest path");
+			}
+			if (scenario.getType() == Mode.TIME) {
+				System.out.println("Time sub path in Path: " + dPath.getMinimumTravelTime() + " Time Sub Path: " + sdPath.getMinimumTravelTime());
+			} else if (scenario.getType() == Mode.LENGTH) {
+				System.out.println("Length sub path in Path: " + dPath.getLength() + " Length Sub Path: " + sdPath.getLength());
+			}
+		}
+
 	}
 
 	public static void main(String[] args) throws Exception {
-		String path = "B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes";
-		
-        String pathName = path + "\\paths_perso\\" + "path1.path";
+//		String path = "B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes";
+		String path = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes";
+        
+		String pathName = path + "\\paths_perso\\" + "path1.path";
         String subpathName = path + "\\paths_perso\\" + "subpath1.path";
         String mapName  = path + "\\maps\\" + "toulouse.mapgr";
-        scenarioTest(mapName, pathName, subpathName, Mode.TIME);
-		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);	
+//        scenarioTest(mapName, pathName, subpathName, Mode.TIME);
+//		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);	
 		
         pathName = path + "\\paths_perso\\" + "path2.path";
         subpathName = path + "\\paths_perso\\" + "subpath2.path";
