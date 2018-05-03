@@ -21,12 +21,12 @@ public class DijkstraValidityTest {
 		GraphReader reader = new BinaryGraphReader(
 				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
 
-		System.out.println("Graph Reading started.");
+		//System.out.println("Graph Reading started.");
 
 		//Read the graph.
 		Graph graph = reader.read();
 
-		System.out.println("Graph Reading ended.");
+		//System.out.println("Graph Reading ended.");
 
 		//Create a PathReader.
 		PathReader pathReader = new BinaryPathReader(
@@ -67,11 +67,52 @@ public class DijkstraValidityTest {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String mapName  = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes\\insa.mapgr";
-		String pathName = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes\\path_fr31insa_rangueil_r2.path";
+		String path = "B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes";
 		
-		scenarioTest(mapName, pathName, Mode.TIME);
-		scenarioTest(mapName, pathName, Mode.LENGTH);
+		/*String mapName  = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes\\insa.mapgr";
+		String pathName = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes\\path_fr31insa_rangueil_r2.path";*/
+		
+		/*String[][] files = new String[10][2];
+		int k=0;
+		final File pathfolder = new File("B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes\\paths\\");
+		final File mapsfolder = new File("B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes\\maps\\");
+		for (final File pathfileEntry : pathfolder.listFiles()) {
+	        if (!pathfileEntry.isDirectory()) {
+	        	for (final File mapfileEntry : pathfolder.listFiles()) {
+	        		
+	        	}
+	        	files[k][0] = pathfileEntry.getName();
+	        	System.out.println(files[k][0]);
+	        	k = k+1;
+	        }
+	    }*/
+	
+		String[][] files = new String[5][2];
+		files[0][0] = "path_fr31_insa_aeroport_length.path";
+		files[0][1] = "haute-garonne.mapgr";
+		files[1][0] = "path_fr31_insa_aeroport_time.path";
+		files[1][1] = "haute-garonne.mapgr";
+		files[2][0] = "path_fr31_insa_bikini_canal.path";
+		files[2][1] = "haute-garonne.mapgr";
+		files[3][0] = "path_fr31insa_rangueil_insa.path";
+		files[3][1] = "insa.mapgr";
+		files[4][0] = "path_fr31insa_rangueil_r2.path";
+		files[4][1] = "insa.mapgr";
+		/*files[5][0] = "path_fr31_insa_bikini_motorcar.path";
+		files[5][1] = "haute-garonne.mapgr";
+		files[6][0] = "path_be_173101_302442.path";
+		files[6][1] = "belgique.mapgr";
+		files[7][0] = "path_fr_insa_tour.path";
+		files[7][1] = "france.mapgr";*/
+
+		
+		for(String[] file : files) {
+	        String pathName = path + "\\paths\\" + file[0];
+	        String mapName  = path + "\\maps\\" + file[1];
+	        System.out.println(file[0] + " & " + file[1]);
+			scenarioTest(mapName, pathName, Mode.TIME);
+			scenarioTest(mapName, pathName, Mode.LENGTH);
+		}
 	}
 	
 

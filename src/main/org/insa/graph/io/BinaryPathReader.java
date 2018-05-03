@@ -38,6 +38,7 @@ public class BinaryPathReader extends BinaryReader implements PathReader {
         String mapId = readFixedLengthString(BinaryGraphReader.MAP_ID_FIELD_LENGTH, "UTF-8");
 
         if (!mapId.equals(graph.getMapId())) {
+        	System.out.println("NOOOOOOOOOOON :) \n  | MapId du map : " + graph.getMapId() + "\n  | MapId du path: " + mapId);
             throw new MapMismatchException(mapId, graph.getMapId());
         }
 

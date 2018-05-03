@@ -51,7 +51,7 @@ public class Path {
 					}
 				}
 				//        		j = graphNodes.indexOf(node);
-				if (j==-1) {
+				if (j == -1) {
 					IllegalArgumentException e = new IllegalArgumentException();
 					throw e;
 				}
@@ -68,15 +68,15 @@ public class Path {
 				Arc tmp = null;
 				//Searching for the arc linking the consecutive nodes with the shortest travel time
 				for (Arc arc : gNode) {
-					if ((arc.getOrigin() == node) && (arc.getDestination()== nextNode)) {
-						if (tmp == null) {
+					if ((arc.getOrigin()  ==  node) && (arc.getDestination() ==  nextNode)) {
+						if (tmp  ==  null) {
 							tmp = arc;
 						} else if (arc.getMinimumTravelTime() <tmp.getMinimumTravelTime()) {
 							tmp = arc;
 						}
 					}
 				}
-				if (tmp == null) {
+				if (tmp  ==  null) {
 					IllegalArgumentException e = new IllegalArgumentException();
 					throw e;
 				}
@@ -121,7 +121,7 @@ public class Path {
 					}
 				}
 //				j = graphNodes.indexOf(node);
-				if (j == -1) {
+				if (j  ==  -1) {
 					IllegalArgumentException e = new IllegalArgumentException();
 					throw e;
 				}
@@ -140,15 +140,15 @@ public class Path {
 				Arc tmp = null;
 				//search for the arc linking the consecutive nodes with the shortest travel time
 				for (Arc arc : gNode) {
-					if ((arc.getOrigin() == node) && (arc.getDestination()== nextNode)) {
-						if (tmp == null) {
+					if ((arc.getOrigin()  ==  node) && (arc.getDestination() ==  nextNode)) {
+						if (tmp  ==  null) {
 							tmp = arc;
 						} else if (arc.getLength() < tmp.getLength()) {
 							tmp = arc;
 						}
 					}
 				}
-				if (tmp == null) {
+				if (tmp  ==  null) {
 					IllegalArgumentException e = new IllegalArgumentException();
 					throw e;
 				}
@@ -171,7 +171,7 @@ public class Path {
 	 *         next).
 	 */
 	public static Path concatenate(Path... paths) throws IllegalArgumentException {
-		if (paths.length == 0) {
+		if (paths.length  ==  0) {
 			throw new IllegalArgumentException("Cannot concatenate an empty list of paths.");
 		}
 		final String mapId = paths[0].getGraph().getMapId();
@@ -271,7 +271,7 @@ public class Path {
 	 * @return true if this path is empty, false otherwise.
 	 */
 	public boolean isEmpty() {
-		return this.origin == null;
+		return this.origin  ==  null;
 	}
 
 	/**
@@ -299,10 +299,10 @@ public class Path {
 	 * 
 	 */
 	public boolean isValid() {
-		if (this.isEmpty() || ((this.arcs.size() == 0) && (this.origin != null))) {
+		if (this.isEmpty() || ((this.arcs.size()  ==  0) && (this.origin != null))) {
 			return true;
-		} else if ((this.arcs.size() > 0) && (this.origin == this.arcs.get(0).getOrigin())) {
-			if (this.arcs.size() == 1) {
+		} else if ((this.arcs.size() > 0) && (this.origin  ==  this.arcs.get(0).getOrigin())) {
+			if (this.arcs.size()  ==  1) {
 				return true;
 			} else {
 				Node temp;
