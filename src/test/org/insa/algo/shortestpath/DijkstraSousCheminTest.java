@@ -76,7 +76,7 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 		int debut = -1;
 		int i = 0;
 		for (Arc arc: dPath.getArcs()) {
-			if ((arc.getOrigin().getId() == sdPath.getArcs().get(0).getOrigin().getId()) && (arc.getDestination().getId() == sdPath.getArcs().get(0).getDestination().getId())) {
+			if ((arc.getOrigin().getId() == sdPath.getOrigin().getId()) && (arc.getDestination().getId() == sdPath.getArcs().get(0).getDestination().getId())) {
 				debut = i;
 				break;
 			}
@@ -97,12 +97,12 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 			if (same) {
 				System.out.println("The sub path is a shortest path");
 			} else {
-				System.out.println("The sub path is NOT shortest path");
+				System.out.println("The sub path is NOT the shortest path");
 			}
 			if (scenario.getType() == Mode.TIME) {
-				System.out.println("Time sub path in Path: " + dPath.getMinimumTravelTime() + " Time Sub Path: " + sdPath.getMinimumTravelTime());
+				System.out.println("Time path in Path: " + dPath.getMinimumTravelTime() + " Time Sub Path: " + sdPath.getMinimumTravelTime());
 			} else if (scenario.getType() == Mode.LENGTH) {
-				System.out.println("Length sub path in Path: " + dPath.getLength() + " Length Sub Path: " + sdPath.getLength());
+				System.out.println("Length path in Path: " + dPath.getLength() + " Length Sub Path: " + sdPath.getLength());
 			}
 		}
 
@@ -118,11 +118,17 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 //        scenarioTest(mapName, pathName, subpathName, Mode.TIME);
 //		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);	
 		
-        pathName = path + "\\paths_perso\\" + "path2.path";
-        subpathName = path + "\\paths_perso\\" + "subpath2.path";
+        pathName = path + "\\paths_perso\\" + "path_frn_20484_185662.path";
+        subpathName = path + "\\paths_perso\\" + "subpath_frn_30798_74902.path";
         mapName  = path + "\\maps\\" + "midi-pyrenees.mapgr";
 		scenarioTest(mapName, pathName, subpathName, Mode.TIME);
 		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);	
+
+        pathName = path + "\\paths_perso\\" + "path_fr31insa_52_139.path";
+        subpathName = path + "\\paths_perso\\" + "subpath_fr31insa_517_389.path";
+        mapName  = path + "\\maps\\" + "insa.mapgr";
+		scenarioTest(mapName, pathName, subpathName, Mode.TIME);
+		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);
 		
 	}
 }
