@@ -32,5 +32,13 @@ public class LabelStar extends Label {
 			return this.cout;
 		}
 	}
+	
+	@Override
+	public int compareTo(Label o) {
+		if (Double.compare(this.getCout(),  o.getCout()) == 0) {
+			return Double.compare(this.getCoutToDest(),  ((LabelStar)o).getCoutToDest());
+		}
+		return Double.compare(this.getCout(),  o.getCout());
+	}
 
 }

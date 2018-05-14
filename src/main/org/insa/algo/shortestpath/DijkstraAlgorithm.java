@@ -16,6 +16,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	public DijkstraAlgorithm(ShortestPathData data) {
 		super(data);
 	}
+	
+	public Label initLabel(Node node,ShortestPathData data) {
+		return new Label(node);
+	}
+	
+	public double conditionCost(double oldCost, Label lx, Arc arc, ShortestPathData data) {
+		return Math.min(oldCost, lx.getCout()+ data.getCost(arc));
+	}
 
 	@Override
 	//O((n+m)log(n))
@@ -30,7 +38,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		// Initialize array of labels.
 		Label[] marks = new Label[nbNodes];
 		for (Node node: graph) {
-			marks[node.getId()] = new Label(node);
+			marks[node.getId()] = initLabel(node, data);
 		}
 		marks[data.getOrigin().getId()].setCout(0.0);
 
@@ -73,7 +81,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 					if (!ly.isMarked()) {
 						stillExistNotMarked = true;
 						oldCost = ly.getCout();
-						newCost = Math.min(oldCost, lx.getCout()+ data.getCost(arc));
+						newCost = conditionCost(oldCost, lx, arc, data);
 						//System.out.println("old cost "+ oldCost + " other cost " + (lx.getCout()+data.getCost(arc)) + " new cost "+ newCost);
 						ly.setCout(newCost);
 						if (newCost != oldCost) {
