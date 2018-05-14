@@ -5,7 +5,7 @@ import org.insa.graph.Node;
 public class Label implements Comparable<Label>{
 
 	private boolean marked;
-	private double cout;
+	protected double cout;
 	private Node node;
 	
 	public Label(Node node) {
@@ -46,7 +46,7 @@ public class Label implements Comparable<Label>{
 
 	@Override
 	public int compareTo(Label o) {
-		return Double.compare(this.cout,  o.cout);
+		return Double.compare(this.getCout(),  o.getCout());
 	}
 
 
