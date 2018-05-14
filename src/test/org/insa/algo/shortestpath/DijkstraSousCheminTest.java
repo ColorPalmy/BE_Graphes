@@ -87,22 +87,27 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 			throw new Exception("the origin of the sub path is not in the path");
 		} else {
 			boolean same = true;
+			float length = 0;
+			double time = 0.0;
 			for (Arc arc: sdPath.getArcs()) {
+				length = length + arc.getLength();
+				time = time + arc.getMinimumTravelTime();
 				if ((arc.getOrigin().getId() != pathArcs.get(debut).getOrigin().getId()) || (arc.getDestination().getId() != pathArcs.get(debut).getDestination().getId())) {
 					same = false;
-					break;
+					System.out.println("subpath origin: " + arc.getOrigin().getId() + " destination: " + arc.getDestination().getId() + " path origin: " + pathArcs.get(debut).getOrigin().getId() + " destination: " + pathArcs.get(debut).getDestination().getId());
+//					break;
 				}
 				debut = debut + 1;
 			}
-			if (same) {
+			if (same || ((scenario.getType() == Mode.TIME) && (time == sdPath.getMinimumTravelTime()) ) || ((scenario.getType() == Mode.LENGTH) && (length == sdPath.getLength())) ) {
 				System.out.println("The sub path is a shortest path");
 			} else {
 				System.out.println("The sub path is NOT the shortest path");
 			}
 			if (scenario.getType() == Mode.TIME) {
-				System.out.println("Time path in Path: " + dPath.getMinimumTravelTime() + " Time Sub Path: " + sdPath.getMinimumTravelTime());
+				System.out.println("Time subpath in Path: " + time + " Time Sub Path: " + sdPath.getMinimumTravelTime() + "\n");
 			} else if (scenario.getType() == Mode.LENGTH) {
-				System.out.println("Length path in Path: " + dPath.getLength() + " Length Sub Path: " + sdPath.getLength());
+				System.out.println("Length subpath in Path: " + length + " Length Sub Path: " + sdPath.getLength() + "\n");
 			}
 		}
 
@@ -111,24 +116,29 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 	public static void main(String[] args) throws Exception {
 //		String path = "B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes";
 		String path = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes";
-        
-		String pathName = path + "\\paths_perso\\" + "path1.path";
-        String subpathName = path + "\\paths_perso\\" + "subpath1.path";
-        String mapName  = path + "\\maps\\" + "toulouse.mapgr";
-//        scenarioTest(mapName, pathName, subpathName, Mode.TIME);
-//		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);	
-		
-        pathName = path + "\\paths_perso\\" + "path_frn_20484_185662.path";
-        subpathName = path + "\\paths_perso\\" + "subpath_frn_30798_74902.path";
-        mapName  = path + "\\maps\\" + "midi-pyrenees.mapgr";
+       
+        String pathName = path + "\\paths_perso\\" + "path_frn_20484_185662.path";
+        String subpathName = path + "\\paths_perso\\" + "subpath_frn_30798_74902.path";
+        String mapName  = path + "\\maps\\" + "midi-pyrenees.mapgr";
+		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);
+		pathName = path + "\\paths_perso\\" + "timepath_frn_20484_185662.path";
+        subpathName = path + "\\paths_perso\\" + "timesubpath_frn_30798_152367.path";
 		scenarioTest(mapName, pathName, subpathName, Mode.TIME);
-		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);	
-
+		
+		
         pathName = path + "\\paths_perso\\" + "path_fr31insa_52_139.path";
         subpathName = path + "\\paths_perso\\" + "subpath_fr31insa_517_389.path";
         mapName  = path + "\\maps\\" + "insa.mapgr";
 		scenarioTest(mapName, pathName, subpathName, Mode.TIME);
 		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);
+		
+        pathName = path + "\\paths_perso\\" + "path_frn_107733_415883.path";
+        subpathName = path + "\\paths_perso\\" + "subpath_frn_88878_481884.path";
+        mapName  = path + "\\maps\\" + "midi-pyrenees.mapgr";
+		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);
+        pathName = path + "\\paths_perso\\" + "timepath_frn_107733_415883.path";
+        subpathName = path + "\\paths_perso\\" + "timesubpath_frn_252493_32738.path";
+		scenarioTest(mapName, pathName, subpathName, Mode.TIME);
 		
 	}
 }

@@ -73,7 +73,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 					if (!ly.isMarked()) {
 						stillExistNotMarked = true;
 						oldCost = ly.getCout();
-						newCost = Math.min(oldCost, lx.getCout()+data.getCost(arc));
+						newCost = Math.min(oldCost, lx.getCout()+ data.getCost(arc));
 						//System.out.println("old cost "+ oldCost + " other cost " + (lx.getCout()+data.getCost(arc)) + " new cost "+ newCost);
 						ly.setCout(newCost);
 						if (newCost != oldCost) {
