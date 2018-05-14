@@ -37,7 +37,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 		Arc[] predecessorArcs = new Arc[nbNodes];
 
 		//Creation of the BinaryHeap of Labels.
-		BinaryHeap<LabelStar> tas = new BinaryHeap<LabelStar>();
+		BinaryHeap<Label> tas = new BinaryHeap<Label>();
 
 		// Notify observers about the first event (origin processed).
 		notifyOriginProcessed(data.getOrigin());
@@ -47,7 +47,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 
 		boolean stillExistNotMarked = true;
 		Node x;
-		LabelStar lx;
+		Label lx;
 		LabelStar ly;
 		double oldCost, newCost;
 		int iteration = 0;
@@ -72,7 +72,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 					if (!ly.isMarked()) {
 						stillExistNotMarked = true;
 						oldCost = ly.getCout();
-						newCost = Math.min(oldCost, lx.getCout()+data.getCost(arc));
+						newCost = Math.min(oldCost, lx.getCout() + data.getCost(arc));
 						//System.out.println("old cost "+ oldCost + " other cost " + (lx.getCout()+data.getCost(arc)) + " new cost "+ newCost);
 						ly.setCout(newCost);
 						if (newCost != oldCost) {

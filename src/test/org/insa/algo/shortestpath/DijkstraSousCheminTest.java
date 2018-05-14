@@ -116,18 +116,6 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 	public static void main(String[] args) throws Exception {
 //		String path = "B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes";
 		String path = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes";
-<<<<<<< HEAD
-        
-		String pathName = path + "\\paths_perso\\" + "path1.path";
-        String subpathName = path + "\\paths_perso\\" + "subpath1.path";
-        String mapName  = path + "\\maps\\" + "toulouse.mapgr";
-//      scenarioTest(mapName, pathName, subpathName, Mode.TIME);
-//		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);	
-		
-        pathName = path + "\\paths_perso\\" + "path_frn_20484_185662.path";
-        subpathName = path + "\\paths_perso\\" + "subpath_frn_30798_74902.path";
-        mapName  = path + "\\maps\\" + "midi-pyrenees.mapgr";
-=======
        
         String pathName = path + "\\paths_perso\\" + "path_frn_20484_185662.path";
         String subpathName = path + "\\paths_perso\\" + "subpath_frn_30798_74902.path";
@@ -135,7 +123,6 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);
 		pathName = path + "\\paths_perso\\" + "timepath_frn_20484_185662.path";
         subpathName = path + "\\paths_perso\\" + "timesubpath_frn_30798_152367.path";
->>>>>>> ac159d96640c4b1d9d9caa5b77a63d5721341e08
 		scenarioTest(mapName, pathName, subpathName, Mode.TIME);
 		
 		
