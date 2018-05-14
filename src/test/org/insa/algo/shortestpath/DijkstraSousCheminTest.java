@@ -115,7 +115,7 @@ public static void scenarioTest(String mapName, String pathName, String subpathN
 		String pathName = path + "\\paths_perso\\" + "path1.path";
         String subpathName = path + "\\paths_perso\\" + "subpath1.path";
         String mapName  = path + "\\maps\\" + "toulouse.mapgr";
-//        scenarioTest(mapName, pathName, subpathName, Mode.TIME);
+//      scenarioTest(mapName, pathName, subpathName, Mode.TIME);
 //		scenarioTest(mapName, pathName, subpathName, Mode.LENGTH);	
 		
         pathName = path + "\\paths_perso\\" + "path_frn_20484_185662.path";
