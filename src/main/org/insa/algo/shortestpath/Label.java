@@ -44,6 +44,7 @@ public class Label implements Comparable<Label>{
 		return cout;
 	}
 
+	@Override
 	public int compareTo(Label o) {
 		return Double.compare(this.getCout(),  o.getCout());
 	}

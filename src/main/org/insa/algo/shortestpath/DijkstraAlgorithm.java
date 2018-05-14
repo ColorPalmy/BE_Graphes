@@ -17,11 +17,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		super(data);
 	}
 	
-	public Label initLabel(Node node,ShortestPathData data) {
+	private BinaryHeap<Label> initTas() {
+		return new BinaryHeap<Label>();
+	}
+	
+	private Label initLabel(Node node,ShortestPathData data) {
 		return new Label(node);
 	}
 	
-	public double conditionCost(double oldCost, Label lx, Arc arc, ShortestPathData data) {
+	private double conditionCost(double oldCost, Label lx, Arc arc, ShortestPathData data) {
 		return Math.min(oldCost, lx.getCout()+ data.getCost(arc));
 	}
 
@@ -46,8 +50,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		Arc[] predecessorArcs = new Arc[nbNodes];
 
 		//Creation of the BinaryHeap of Labels.
-		BinaryHeap<Label> tas = new BinaryHeap<Label>();
-
+//		BinaryHeap<Label> tas = new BinaryHeap<Label>();
+		BinaryHeap<Label> tas = initTas();
+		
 		// Notify observers about the first event (origin processed).
 		notifyOriginProcessed(data.getOrigin());
 

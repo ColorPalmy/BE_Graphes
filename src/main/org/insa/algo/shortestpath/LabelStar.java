@@ -24,7 +24,6 @@ public class LabelStar extends Label {
 		this.coutToDest = coutToDest;
 	}
 
-	@Override
 	public double getCout() {
 		if (!Double.isInfinite(this.cout)) {
 			return (this.cout + this.coutToDest);
@@ -35,10 +34,10 @@ public class LabelStar extends Label {
 	
 	@Override
 	public int compareTo(Label o) {
-		if (Double.compare(this.getCout(),  o.getCout()) == 0) {
+		if (Double.compare(this.getCout(), o.getCout()) == 0) {
 			return Double.compare(this.getCoutToDest(),  ((LabelStar)o).getCoutToDest());
 		}
-		return Double.compare(this.getCout(),  o.getCout());
+		return Double.compare(this.getCout(), o.getCout());
 	}
 
 }
