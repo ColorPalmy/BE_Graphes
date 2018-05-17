@@ -1,4 +1,4 @@
-package org.insa.algo.shortestpath;
+package org.insa.algo.utils;
 
 import org.insa.graph.Node;
 

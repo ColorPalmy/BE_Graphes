@@ -1,8 +1,8 @@
-package org.insa.algo.shortestpath;
+package org.insa.algo.utils;
 
 import org.insa.graph.Node;
 
-public class Label implements Comparable<Label>{
+public class Label implements Comparable<Label> {
 
 	private boolean marked;
 	protected double cout;
@@ -46,6 +46,6 @@ public class Label implements Comparable<Label>{
 
 	@Override
 	public int compareTo(Label o) {
-		return Double.compare(this.getCout(),  o.getCout());
+		return Double.compare(this.getCout(), o.getCout());
 	}
 }

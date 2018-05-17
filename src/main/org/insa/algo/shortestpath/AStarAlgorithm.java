@@ -6,7 +6,8 @@ import java.util.Collections;
 import org.insa.algo.AbstractInputData.Mode;
 import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.BinaryHeap;
-import org.insa.algo.shortestpath.LabelStar;
+import org.insa.algo.utils.Label;
+import org.insa.algo.utils.LabelStar;
 import org.insa.graph.Arc;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
@@ -18,12 +19,10 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         super(data);
     }
     
-    @Override
 	private BinaryHeap<LabelStar> initTas() {
 		return new BinaryHeap<LabelStar>();
 	}
 
-    @Override
     private Label initLabel(Node node, ShortestPathData data) {
     	double coutToDest = node.getPoint().distanceTo(data.getDestination().getPoint());
     	if (data.getMode() == Mode.LENGTH) {
