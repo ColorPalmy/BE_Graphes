@@ -19,8 +19,8 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         super(data);
     }
     
-	private BinaryHeap<LabelStar> initTas() {
-		return new BinaryHeap<LabelStar>();
+	private BinaryHeap<Label> initTas() {
+		return new BinaryHeap<Label>();
 	}
 
     private Label initLabel(Node node, ShortestPathData data) {
@@ -34,10 +34,10 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     	return new LabelStar(node, coutToDest);
 	}
     
-    @Override
-	private double conditionCost(double oldCost, Label lx, Arc arc, ShortestPathData data) {
+    //@Override
+    private double conditionCost(double oldCost, Label lx, Arc arc, ShortestPathData data) {
     	if (oldCost == lx.getCout()) {
-    		
+    		//Do something
     	}
 		return Math.min(oldCost, lx.getCout()+ data.getCost(arc));
 	}
