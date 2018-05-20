@@ -25,11 +25,12 @@ public class LabelStar extends Label {
 	}
 
 	public double getCout() {
-		if (!Double.isInfinite(this.cout)) {
-			return (this.cout + this.coutToDest);
-		} else {
-			return this.cout;
-		}
+//		if (!Double.isInfinite(this.cout)) {
+//			return this.cout + this.coutToDest;
+//		} else {
+//			return this.cout;
+//		}
+		return this.cout + this.coutToDest;
 	}
 	
 	@Override

@@ -18,15 +18,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		super(data);
 	}
 	
-	private BinaryHeap<Label> initTas() {
+	protected BinaryHeap<Label> initTas() {
 		return new BinaryHeap<Label>();
 	}
 	
-	private Label initLabel(Node node,ShortestPathData data) {
+	protected Label initLabel(Node node,ShortestPathData data) {
 		return new Label(node);
 	}
 	
-	private double conditionCost(Label ly, Label lx, Arc arc, ShortestPathData data) {
+	protected double conditionCost(Label ly, Label lx, Arc arc, ShortestPathData data) {
 		return Math.min(ly.getCout(), lx.getCout()+ data.getCost(arc));
 	}
 

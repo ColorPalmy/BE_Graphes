@@ -13,11 +13,13 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         super(data);
     }
     
-	private BinaryHeap<Label> initTas() {
+    @Override
+	protected BinaryHeap<Label> initTas() {
 		return new BinaryHeap<Label>();
 	}
 
-    private Label initLabel(Node node, ShortestPathData data) {
+    @Override
+	protected Label initLabel(Node node, ShortestPathData data) {
     	double coutToDest = node.getPoint().distanceTo(data.getDestination().getPoint());
     	if (data.getMode() == Mode.LENGTH) {
     		return new LabelStar(node, coutToDest);
@@ -28,8 +30,9 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     	return new LabelStar(node, coutToDest);
 	}
     
-//    @Override
-    private double conditionCost(Label ly, Label lx, Arc arc, ShortestPathData data) {
+//  @Override
+    @Override
+	protected double conditionCost(Label ly, Label lx, Arc arc, ShortestPathData data) {
     	if (ly.getCout() == lx.getCout()) {
     		if (((LabelStar)ly).getCoutToDest() < (((LabelStar)lx).getCoutToDest() + data.getCost(arc))) {
     			return ly.getCout();
@@ -38,6 +41,6 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     		}
 //    		return Math.min(((LabelStar)ly).getCoutToDest(), ((LabelStar)lx).getCoutToDest() + data.getCost(arc));
     	}
-		return Math.min(ly.getCout(), lx.getCout()+ data.getCost(arc));
+		return Math.min(ly.getCout(), lx.getCout() + data.getCost(arc));
 	}
 }
