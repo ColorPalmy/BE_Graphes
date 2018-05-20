@@ -31,7 +31,11 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 //    @Override
     private double conditionCost(Label ly, Label lx, Arc arc, ShortestPathData data) {
     	if (ly.getCout() == lx.getCout()) {
-    		//Do something
+    		if (((LabelStar)ly).getCoutToDest() < (((LabelStar)lx).getCoutToDest() + data.getCost(arc))) {
+    			return ly.getCout();
+    		} else {
+    			return lx.getCout()+ data.getCost(arc);
+    		}
 //    		return Math.min(((LabelStar)ly).getCoutToDest(), ((LabelStar)lx).getCoutToDest() + data.getCost(arc));
     	}
 		return Math.min(ly.getCout(), lx.getCout()+ data.getCost(arc));
