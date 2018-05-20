@@ -31,7 +31,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	}
 
 	@Override
-	//O((n+m)log(n))
 	protected ShortestPathSolution doRun() {
 
 		// Retrieve the graph.
@@ -77,6 +76,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				x = lx.getNode();
 				notifyNodeMarked(x);
 				lx.setMarked(true);
+				//System.out.println("We are at node id =" + lx.getNode().getId());
 				//System.out.println(lx.getCout());
 
 				for(Arc arc: x) {
