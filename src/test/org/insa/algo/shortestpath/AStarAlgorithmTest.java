@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
 import org.insa.algo.shortestpath.BellmanFordAlgorithm;
-import org.insa.algo.shortestpath.DijkstraAlgorithm;
+import org.insa.algo.shortestpath.AStarAlgorithm;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
+import org.insa.graph.Point;
 import org.insa.graph.RoadInformation;
 import org.insa.graph.RoadInformation.RoadType;
 import org.junit.BeforeClass;
@@ -29,54 +29,67 @@ public class AStarAlgorithmTest {
     
     public static void initAll() throws IOException {
 
+    	Point p1 = new Point(0,0);
+        Point p2 = new Point(0,0);
+        ArrayList<Point> liste_points = new ArrayList<Point>();
+        liste_points.add(p1);
+        liste_points.add(p2);
+    	
         // Create nodes
         nodes = new Node[6];
-        for (int i = 0; i < nodes.length; ++i) {
-            nodes[i] = new Node(i, null);
-        }
+//        for (int i = 0; i < nodes.length; ++i) {
+//            nodes[i] = new Node(i, p1);
+//        }
+        nodes[0] = new Node(0, new Point(0, 0.5f));
+        nodes[1] = new Node(1, new Point(0.5f, 1));
+        nodes[2] = new Node(2, new Point(0.5f, 0));
+        nodes[3] = new Node(3, new Point(1, 1.5f));
+        nodes[4] = new Node(4, new Point(1.5f, 1));
+        nodes[5] = new Node(5, new Point(1.5f, 0));
+
 
         Node.linkNodes(nodes[0], nodes[1], 7,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[0], nodes[2], 8,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[1], nodes[3], 4,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[1], nodes[4], 1,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[1], nodes[5], 5,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[2], nodes[0], 7,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[2], nodes[1], 2,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[2], nodes[5], 2,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[4], nodes[2], 2,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[4], nodes[3], 2,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[4], nodes[5], 3,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         Node.linkNodes(nodes[5], nodes[4], 3,
                 new RoadInformation(RoadType.UNCLASSIFIED, null, true, 1, null),
-                new ArrayList<>());
+                liste_points);
         
         graph = new Graph("ID", "", Arrays.asList(nodes), null);
     }
 	
 	@Test
-    public void BellmanDijkstraSameShortestPath() {
+    public void BellmanAStarSameShortestPath() {
 		String s = "";
 		//Generate pairs
 		for (int i = 0; i < nodes.length; ++i) {
@@ -84,25 +97,25 @@ public class AStarAlgorithmTest {
 				if (i != j) {
 					ShortestPathData testdata = new ShortestPathData(graph, nodes[i], nodes[j], ArcInspectorFactory.getAllFilters().get(0));
 					
-					ShortestPathAlgorithm dijkstraAlgo = new DijkstraAlgorithm(testdata);
+					ShortestPathAlgorithm AStarAlgo = new AStarAlgorithm(testdata);
 					ShortestPathAlgorithm bellmanAlgo = new BellmanFordAlgorithm(testdata);
 					
-					ShortestPathSolution dijkstraSolution = dijkstraAlgo.doRun();
+					ShortestPathSolution AStarSolution = AStarAlgo.doRun();
 					ShortestPathSolution bellmanSolution = bellmanAlgo.doRun();
 					
 					//Check if both solutions are feasible or unfeasible
-					assertEquals(dijkstraSolution.isFeasible(), bellmanSolution.isFeasible());
+					assertEquals(AStarSolution.isFeasible(), bellmanSolution.isFeasible());
 					
-					if (dijkstraSolution.isFeasible() && bellmanSolution.isFeasible()) {
+					if (AStarSolution.isFeasible() && bellmanSolution.isFeasible()) {
 						//Check if both paths are valid
-						assertEquals(dijkstraSolution.getPath().isValid(), bellmanSolution.getPath().isValid());
+						assertEquals(AStarSolution.getPath().isValid(), bellmanSolution.getPath().isValid());
 						//Check if both paths have the same length
-						assertEquals(dijkstraSolution.getPath().getLength(), bellmanSolution.getPath().getLength(), 1e-6);
+						assertEquals(AStarSolution.getPath().getLength(), bellmanSolution.getPath().getLength(), 1e-6);
 						//Check if both paths take the same time
-						assertEquals(dijkstraSolution.getPath().getMinimumTravelTime(), bellmanSolution.getPath().getMinimumTravelTime(), 1e-6);
+						assertEquals(AStarSolution.getPath().getMinimumTravelTime(), bellmanSolution.getPath().getMinimumTravelTime(), 1e-6);
 						//Check if both paths have the same size
-						assertEquals(dijkstraSolution.getPath().size(), bellmanSolution.getPath().size());
-						s += dijkstraSolution.getPath().getLength() + " ";
+						assertEquals(AStarSolution.getPath().size(), bellmanSolution.getPath().size());
+						s += AStarSolution.getPath().getLength() + " ";
 					} else {
 						s += "inf ";
 					}
