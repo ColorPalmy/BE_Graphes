@@ -1,17 +1,11 @@
 package org.insa.algo.shortestpath;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 import org.insa.algo.AbstractInputData.Mode;
-import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.BinaryHeap;
 import org.insa.algo.utils.Label;
 import org.insa.algo.utils.LabelStar;
 import org.insa.graph.Arc;
-import org.insa.graph.Graph;
 import org.insa.graph.Node;
-import org.insa.graph.Path;
 
 public class AStarAlgorithm extends DijkstraAlgorithm {
 
@@ -34,11 +28,12 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     	return new LabelStar(node, coutToDest);
 	}
     
-    //@Override
-    private double conditionCost(double oldCost, Label lx, Arc arc, ShortestPathData data) {
-    	if (oldCost == lx.getCout()) {
+//    @Override
+    private double conditionCost(Label ly, Label lx, Arc arc, ShortestPathData data) {
+    	if (ly.getCout() == lx.getCout()) {
     		//Do something
+//    		return Math.min(((LabelStar)ly).getCoutToDest(), ((LabelStar)lx).getCoutToDest() + data.getCost(arc));
     	}
-		return Math.min(oldCost, lx.getCout()+ data.getCost(arc));
+		return Math.min(ly.getCout(), lx.getCout()+ data.getCost(arc));
 	}
 }

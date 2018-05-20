@@ -26,8 +26,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		return new Label(node);
 	}
 	
-	private double conditionCost(double oldCost, Label lx, Arc arc, ShortestPathData data) {
-		return Math.min(oldCost, lx.getCout()+ data.getCost(arc));
+	private double conditionCost(Label ly, Label lx, Arc arc, ShortestPathData data) {
+		return Math.min(ly.getCout(), lx.getCout()+ data.getCost(arc));
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 					if (!ly.isMarked()) {
 						stillExistNotMarked = true;
 						oldCost = ly.getCout();
-						newCost = conditionCost(oldCost, lx, arc, data);
+						newCost = conditionCost(ly, lx, arc, data);
 						//System.out.println("old cost "+ oldCost + " other cost " + (lx.getCout()+data.getCost(arc)) + " new cost "+ newCost);
 						ly.setCout(newCost);
 						if (newCost != oldCost) {
