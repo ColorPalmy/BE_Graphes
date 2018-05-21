@@ -20,10 +20,10 @@ import org.junit.Test;
 public class DijkstraAlgorithmTest {
 	
     // Small graph use for tests
-    private static Graph graph;
+    protected static Graph graph;
 
     // List of nodes
-    private static Node[] nodes;
+    protected static Node[] nodes;
 
     @BeforeClass
     public static void initAll() throws IOException {
@@ -73,6 +73,34 @@ public class DijkstraAlgorithmTest {
         
         graph = new Graph("ID", "", Arrays.asList(nodes), null);
     }
+    
+    protected ShortestPathAlgorithm testedAlgo (ShortestPathData testdata) {
+    	return new DijkstraAlgorithm(testdata);
+    }
+    
+    private ShortestPathAlgorithm oracleAlgo (ShortestPathData testdata) {
+    	return new BellmanFordAlgorithm(testdata);
+    }
+    
+    private ShortestPathSolution solution (ShortestPathAlgorithm algo) {
+    	return algo.doRun();
+    }
+    
+    void testIsValid(ShortestPathSolution tested, ShortestPathSolution oracle) {
+		assertEquals(tested.getPath().isValid(), oracle.getPath().isValid());
+    }
+    
+    void testSameLength(ShortestPathSolution tested, ShortestPathSolution oracle) {
+		assertEquals(tested.getPath().getLength(), oracle.getPath().getLength(), 1e-6);
+    }
+    
+    void testSameTime(ShortestPathSolution tested, ShortestPathSolution oracle) {
+		assertEquals(tested.getPath().getMinimumTravelTime(), oracle.getPath().getMinimumTravelTime(), 1e-6);
+    }
+    
+    void testSameSize(ShortestPathSolution tested, ShortestPathSolution oracle) {
+		assertEquals(tested.getPath().size(), oracle.getPath().size());
+    }
 	
 	@Test
     public void BellmanDijkstraSameShortestPath() {
@@ -83,24 +111,24 @@ public class DijkstraAlgorithmTest {
 				if (i != j) {
 					ShortestPathData testdata = new ShortestPathData(graph, nodes[i], nodes[j], ArcInspectorFactory.getAllFilters().get(0));
 					
-					ShortestPathAlgorithm dijkstraAlgo = new DijkstraAlgorithm(testdata);
-					ShortestPathAlgorithm bellmanAlgo = new BellmanFordAlgorithm(testdata);
+					ShortestPathAlgorithm dijkstraAlgo = testedAlgo(testdata);
+					ShortestPathAlgorithm bellmanAlgo = oracleAlgo(testdata);
 					
-					ShortestPathSolution dijkstraSolution = dijkstraAlgo.doRun();
-					ShortestPathSolution bellmanSolution = bellmanAlgo.doRun();
+					ShortestPathSolution dijkstraSolution = solution(dijkstraAlgo);
+					ShortestPathSolution bellmanSolution = solution(bellmanAlgo);
 					
 					//Check if both solutions are feasible or unfeasible
 					assertEquals(dijkstraSolution.isFeasible(), bellmanSolution.isFeasible());
 					
 					if (dijkstraSolution.isFeasible() && bellmanSolution.isFeasible()) {
 						//Check if both paths are valid
-						assertEquals(dijkstraSolution.getPath().isValid(), bellmanSolution.getPath().isValid());
+						testIsValid(dijkstraSolution,bellmanSolution);
 						//Check if both paths have the same length
-						assertEquals(dijkstraSolution.getPath().getLength(), bellmanSolution.getPath().getLength(), 1e-6);
+						testSameLength(dijkstraSolution,bellmanSolution);
 						//Check if both paths take the same time
-						assertEquals(dijkstraSolution.getPath().getMinimumTravelTime(), bellmanSolution.getPath().getMinimumTravelTime(), 1e-6);
+						testSameTime(dijkstraSolution,bellmanSolution);
 						//Check if both paths have the same size
-						assertEquals(dijkstraSolution.getPath().size(), bellmanSolution.getPath().size());
+						testSameSize(dijkstraSolution,bellmanSolution);
 						s += dijkstraSolution.getPath().getLength() + " ";
 					} else {
 						s+= "inf ";
