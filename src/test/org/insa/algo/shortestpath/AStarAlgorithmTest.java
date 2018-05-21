@@ -1,13 +1,9 @@
 package org.insa.algo.shortestpath;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.insa.algo.ArcInspectorFactory;
-import org.insa.algo.shortestpath.BellmanFordAlgorithm;
 import org.insa.algo.shortestpath.AStarAlgorithm;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
@@ -15,7 +11,6 @@ import org.insa.graph.Point;
 import org.insa.graph.RoadInformation;
 import org.insa.graph.RoadInformation.RoadType;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 public class AStarAlgorithmTest extends DijkstraAlgorithmTest{
 
@@ -145,46 +140,5 @@ public class AStarAlgorithmTest extends DijkstraAlgorithmTest{
     protected ShortestPathAlgorithm testedAlgo (ShortestPathData testdata) {
     	return new AStarAlgorithm(testdata);
     }
-	
-//	@Test
-//    public void BellmanAStarSameShortestPath() {
-//		String s = "";
-//		//Generate pairs
-//		for (int i = 0; i < nodes.length; ++i) {
-//			for (int j = 0; j < nodes.length; ++j) {
-//				if (i != j) {
-//					ShortestPathData testdata = new ShortestPathData(graph, nodes[i], nodes[j], ArcInspectorFactory.getAllFilters().get(0));
-//					
-//					ShortestPathAlgorithm AStarAlgo = new AStarAlgorithm(testdata);
-//					ShortestPathAlgorithm bellmanAlgo = new BellmanFordAlgorithm(testdata);
-//					
-//					ShortestPathSolution AStarSolution = AStarAlgo.doRun();
-//					ShortestPathSolution bellmanSolution = bellmanAlgo.doRun();
-//					
-//					//Check if both solutions are feasible or unfeasible
-//					assertEquals(AStarSolution.isFeasible(), bellmanSolution.isFeasible());
-//					
-//					if (AStarSolution.isFeasible() && bellmanSolution.isFeasible()) {
-//						//Check if both paths are valid
-//						assertEquals(AStarSolution.getPath().isValid(), bellmanSolution.getPath().isValid());
-//						//Check if both paths have the same length
-//						assertEquals(AStarSolution.getPath().getLength(), bellmanSolution.getPath().getLength(), 1e-6);
-//						//Check if both paths take the same time
-//						assertEquals(AStarSolution.getPath().getMinimumTravelTime(), bellmanSolution.getPath().getMinimumTravelTime(), 1e-6);
-//						//Check if both paths have the same size
-//						assertEquals(AStarSolution.getPath().size(), bellmanSolution.getPath().size());
-//						s += AStarSolution.getPath().getLength() + " ";
-//					} else {
-//						s += "inf ";
-//					}
-//					
-//				} else {
-//					s += "- ";
-//				}
-//	        }
-//			System.out.println(s);
-//			s = "";
-//		}
-//    }
 
 }
