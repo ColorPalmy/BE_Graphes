@@ -3,9 +3,11 @@ package org.insa.algo.shortestpath;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.time.LocalTime;
 
 import org.insa.algo.ArcInspectorFactory;
 import org.insa.algo.AbstractInputData.Mode;
+import org.insa.graph.AccessRestrictions.AccessMode;
 import org.insa.graph.Graph;
 import org.insa.graph.Path;
 import org.insa.graph.io.BinaryGraphReader;
@@ -31,7 +33,7 @@ public abstract class ValidityTest {
     	return algo.doRun();
     }
 
-	public void scenarioTest(String mapName, String pathName, Mode mode) throws Exception {
+	public void scenarioTest(String mapName, String pathName, Mode mode, AccessMode accessMode) throws Exception {
 		
 		// Create a graph reader.
 		GraphReader reader = new BinaryGraphReader(
@@ -52,14 +54,46 @@ public abstract class ValidityTest {
 		Path path = pathReader.readPath(graph);
 		
 		//Create the scenario
-		Scenario scenario = new Scenario(mode, graph, path.getOrigin(), path.getDestination());
+		Scenario scenario = new Scenario(accessMode, mode, graph, path.getOrigin(), path.getDestination());
 		
 		//Create the data for the algorithms
 		ShortestPathData testdata = null;
 		if (scenario.getType() == Mode.TIME) {
-			 testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(2));
+			switch (scenario.getAccessType()) {
+			case MOTORCAR: {
+				testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(3));
+				break;
+			}
+			case FOOT: {
+				testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(4));
+				break;
+			}
+			case BICYCLE: {
+				testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(6));
+				break;
+			}
+			default:
+				testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(2));
+				break;
+			}
 		} else if (scenario.getType() == Mode.LENGTH) {
-			 testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(0));
+			switch (scenario.getAccessType()) {
+			case MOTORCAR: {
+				testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(1));
+				break;
+			}
+			case FOOT: {
+				testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(5));
+				break;
+			}
+			case BICYCLE: {
+				testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(7));
+				break;
+			}
+			default:
+				testdata = new ShortestPathData(graph, scenario.getOrigin(), scenario.getDestination(), ArcInspectorFactory.getAllFilters().get(0));
+				break;
+			}
 		}
 		
 		//Create the algorithms
@@ -70,24 +104,32 @@ public abstract class ValidityTest {
 		ShortestPathSolution obtainedSolution = solution(testAlgo);
 		ShortestPathSolution expectedSolution = solution(oracle);
 	
-		//Get the shortest paths
-		Path dPath = obtainedSolution.getPath();
-		Path bPath = expectedSolution.getPath();
-		
-		if (scenario.getType() == Mode.TIME) {
-			if (dPath.getMinimumTravelTime() == bPath.getMinimumTravelTime() ) {
-				System.out.println("test OK");
-			} else {
-				System.out.println("test PAS OK");
+		if (!obtainedSolution.isFeasible() && !expectedSolution.isFeasible()) {
+			System.out.println("test OK: no path found");
+		} else if (obtainedSolution.isFeasible() && !expectedSolution.isFeasible()) {
+			System.out.println("test NOT OK: path found but shouldnt ");
+		} else if (!obtainedSolution.isFeasible() && expectedSolution.isFeasible()) {
+			System.out.println("test NOT OK: no path found but should");
+		} else {
+			//Get the shortest paths
+			Path dPath = obtainedSolution.getPath();
+			Path bPath = expectedSolution.getPath();
+			
+			if (scenario.getType() == Mode.TIME) {
+				if (dPath.getMinimumTravelTime() == bPath.getMinimumTravelTime() ) {
+					System.out.println("test OK");
+				} else {
+					System.out.println("test NOT OK");
+				}
+				System.out.println(scenario.getAccessType().toString() + " Time "+ this.algo + ": " + LocalTime.MIN.plusSeconds((long)dPath.getMinimumTravelTime()).toString()  + " Time BellmanFord: " + LocalTime.MIN.plusSeconds((long)bPath.getMinimumTravelTime()).toString());
+			} else if (scenario.getType() == Mode.LENGTH) {
+				if (dPath.getLength() == bPath.getLength()) {
+					System.out.println("test OK");
+				} else {
+					System.out.println("test NOT OK");
+				}
+				System.out.println(scenario.getAccessType().toString() + " Length " + this.algo + ": " + dPath.getLength() + "m Length BellmanFord: " + bPath.getLength()+ "m");
 			}
-			System.out.println("Time "+ this.algo + ": " + dPath.getMinimumTravelTime() + " Time BellmanFord: " + bPath.getMinimumTravelTime() + "\n");
-		} else if (scenario.getType() == Mode.LENGTH) {
-			if (dPath.getLength() == bPath.getLength()) {
-				System.out.println("test OK");
-			} else {
-				System.out.println("test PAS OK");
-			}
-			System.out.println("Length " + this.algo + ": " + dPath.getLength() + " Length BellmanFord: " + bPath.getLength()+ "\n");
 		}
 	}
 	
@@ -97,7 +139,7 @@ public abstract class ValidityTest {
 		String path = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes";
 		
 	
-		String[][] files = new String[5][2];
+		String[][] files = new String[10][2];
 		files[0][0] = "path_fr31_insa_aeroport_length.path";
 		files[0][1] = "haute-garonne.mapgr";
 		files[1][0] = "path_fr31_insa_aeroport_time.path";
@@ -108,20 +150,28 @@ public abstract class ValidityTest {
 		files[3][1] = "insa.mapgr";
 		files[4][0] = "path_fr31insa_rangueil_r2.path";
 		files[4][1] = "insa.mapgr";
-		/*files[5][0] = "path_fr31_insa_bikini_motorcar.path";
+		files[5][0] = "path_fr31_highway_152765_152762.path";
 		files[5][1] = "haute-garonne.mapgr";
-		files[6][0] = "path_be_173101_302442.path";
-		files[6][1] = "belgique.mapgr";
-		files[7][0] = "path_fr_insa_tour.path";
-		files[7][1] = "france.mapgr";*/
+		files[6][0] = "path_fr31_pedestrian_39847_39843.path";
+		files[6][1] = "haute-garonne.mapgr";
+		files[7][0] = "path_frn_pedestrian_609543_360479.path";
+		files[7][1] = "midi-pyrenees.mapgr";
+		files[8][0] = "path_frn_pedestrian_214906_436038.path";
+		files[8][1] = "midi-pyrenees.mapgr";
+		files[9][0] = "path_frn_highway_p1_32224_288320.path";
+		files[9][1] = "midi-pyrenees.mapgr";
 
 		
 		for(String[] file : files) {
-	        String pathName = path + "\\paths\\" + file[0];
+	        String pathName = path + "\\paths_perso\\" + file[0];
 	        String mapName  = path + "\\maps\\" + file[1];
-	        System.out.println(file[0] + " & " + file[1]);
-			scenarioTest(mapName, pathName, Mode.TIME);
-			scenarioTest(mapName, pathName, Mode.LENGTH);
+	        System.out.println( "\n" + file[0] + " & " + file[1]);
+			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
+			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
+			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
+			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
+			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
+			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
 		}
 	}
 

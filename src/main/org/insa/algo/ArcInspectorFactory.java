@@ -20,7 +20,7 @@ public class ArcInspectorFactory {
 
         // Common filters:
 
-        // No filter (all arcs allowed):
+        // 0: No filter (all arcs allowed):
         filters.add(new ArcInspector() {
             @Override
             public boolean isAllowed(Arc arc) {
@@ -48,7 +48,7 @@ public class ArcInspectorFactory {
             }
         });
 
-        // Only road allowed for cars and length:
+        // 1: Only road allowed for cars and length:
         filters.add(new ArcInspector() {
             @Override
             public boolean isAllowed(Arc arc) {
@@ -78,7 +78,7 @@ public class ArcInspectorFactory {
             }
         });
 
-        //All roads allowed and time:
+        // 2: All roads allowed and time:
         filters.add(new ArcInspector() {
             @Override
             public boolean isAllowed(Arc arc) {
@@ -106,8 +106,7 @@ public class ArcInspectorFactory {
             }
         });
         
-        
-        // Only road allowed for cars and time:
+        // 3: Only road allowed for cars and time:
         filters.add(new ArcInspector() {
             @Override
             public boolean isAllowed(Arc arc) {
@@ -137,7 +136,7 @@ public class ArcInspectorFactory {
             }
         });
 
-        // Non-private roads for pedestrian and bicycle:
+        // 4: Non-private roads for pedestrian and time:
         filters.add(new ArcInspector() {
 
             @Override
@@ -168,9 +167,102 @@ public class ArcInspectorFactory {
                 return Mode.TIME;
             }
         });
+        
+        // 5: Non-private roads for pedestrian and length:
+        filters.add(new ArcInspector() {
 
-        // Add your own filters here (do not forget to implement toString()
-        // to get an understandable output!):
+            @Override
+            public boolean isAllowed(Arc arc) {
+                return arc.getRoadInformation().getAccessRestrictions()
+                        .isAllowedForAny(AccessMode.FOOT, EnumSet.complementOf(EnumSet
+                                .of(AccessRestriction.FORBIDDEN, AccessRestriction.PRIVATE)));
+            }
+
+            @Override
+            public double getCost(Arc arc) {
+                return arc.getTravelTime(
+                        Math.min(getMaximumSpeed(), arc.getRoadInformation().getMaximumSpeed()));
+            }
+
+            @Override
+            public String toString() {
+                return "Shortest path for pedestrian";
+            }
+
+            @Override
+            public int getMaximumSpeed() {
+                return 5;
+            }
+
+            @Override
+            public Mode getMode() {
+                return Mode.LENGTH;
+            }
+        });
+        
+        // 6: Non-private roads for bicycle and time:
+        filters.add(new ArcInspector() {
+
+            @Override
+            public boolean isAllowed(Arc arc) {
+                return arc.getRoadInformation().getAccessRestrictions()
+                        .isAllowedForAny(AccessMode.BICYCLE, EnumSet.complementOf(EnumSet
+                                .of(AccessRestriction.FORBIDDEN, AccessRestriction.PRIVATE)));
+            }
+
+            @Override
+            public double getCost(Arc arc) {
+                return arc.getTravelTime(
+                        Math.min(getMaximumSpeed(), arc.getRoadInformation().getMaximumSpeed()));
+            }
+
+            @Override
+            public String toString() {
+                return "Fastest path for bicycle";
+            }
+
+            @Override
+            public int getMaximumSpeed() {
+                return 5;
+            }
+
+            @Override
+            public Mode getMode() {
+                return Mode.TIME;
+            }
+        });
+        
+        // 7: Non-private roads for bicycle and length:
+        filters.add(new ArcInspector() {
+
+            @Override
+            public boolean isAllowed(Arc arc) {
+                return arc.getRoadInformation().getAccessRestrictions()
+                        .isAllowedForAny(AccessMode.BICYCLE, EnumSet.complementOf(EnumSet
+                                .of(AccessRestriction.FORBIDDEN, AccessRestriction.PRIVATE)));
+            }
+
+            @Override
+            public double getCost(Arc arc) {
+                return arc.getTravelTime(
+                        Math.min(getMaximumSpeed(), arc.getRoadInformation().getMaximumSpeed()));
+            }
+
+            @Override
+            public String toString() {
+                return "Shortest path for bicycle";
+            }
+
+            @Override
+            public int getMaximumSpeed() {
+                return 5;
+            }
+
+            @Override
+            public Mode getMode() {
+                return Mode.LENGTH;
+            }
+        });
 
         return filters;
     }
