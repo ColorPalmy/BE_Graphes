@@ -139,7 +139,7 @@ public abstract class ValidityTest {
 		String path = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes";
 		
 	
-		String[][] files = new String[10][2];
+		String[][] files = new String[17][2];
 		files[0][0] = "path_fr31_insa_aeroport_length.path";
 		files[0][1] = "haute-garonne.mapgr";
 		files[1][0] = "path_fr31_insa_aeroport_time.path";
@@ -150,28 +150,57 @@ public abstract class ValidityTest {
 		files[3][1] = "insa.mapgr";
 		files[4][0] = "path_fr31insa_rangueil_r2.path";
 		files[4][1] = "insa.mapgr";
+		//chemin uniquement voiture
 		files[5][0] = "path_fr31_highway_152765_152762.path";
 		files[5][1] = "haute-garonne.mapgr";
+		//chemins uniquement piétons
 		files[6][0] = "path_fr31_pedestrian_39847_39843.path";
 		files[6][1] = "haute-garonne.mapgr";
 		files[7][0] = "path_frn_pedestrian_609543_360479.path";
 		files[7][1] = "midi-pyrenees.mapgr";
 		files[8][0] = "path_frn_pedestrian_214906_436038.path";
 		files[8][1] = "midi-pyrenees.mapgr";
+		//chemin uniquement voiture
 		files[9][0] = "path_frn_highway_p1_32224_288320.path";
 		files[9][1] = "midi-pyrenees.mapgr";
+		//chemins dans les 2 sens
+		files[10][0] = "path_frn_67506_35474.path";
+		files[10][1] = "midi-pyrenees.mapgr";
+		files[11][0] = "path_frn_35474_67506.path";
+		files[11][1] = "midi-pyrenees.mapgr";
+		// chemins ABC puis AB et BC
+		files[12][0] = "ABC_car_l_path_frn_558384_293387.path";
+		files[12][1] = "midi-pyrenees.mapgr";
+		files[13][0] = "AB_car_path_frn_558384_181643.path";
+		files[13][1] = "midi-pyrenees.mapgr";
+		files[14][0] = "AB_foot_path_frn_558384_154982.path";
+		files[14][1] = "midi-pyrenees.mapgr";
+		files[15][0] = "BC_car_path_frn_181643_293387.path";
+		files[15][1] = "midi-pyrenees.mapgr";
+		files[16][0] = "BC_foot_path_frn_154982_293387.path";
+		files[16][1] = "midi-pyrenees.mapgr";
 
 		
 		for(String[] file : files) {
 	        String pathName = path + "\\paths_perso\\" + file[0];
 	        String mapName  = path + "\\maps\\" + file[1];
 	        System.out.println( "\n" + file[0] + " & " + file[1]);
-			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
-			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
-			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
-			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
-			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
-			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
+	        if (file[0].equals(files[13][0]) || file[0].equals(files[15][0])) {
+				scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
+				scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
+	        } else if (file[0].equals(files[14][0]) || file[0].equals(files[16][0])) {
+				scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
+				scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
+				scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
+				scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
+	        } else {
+				scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
+				scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
+				scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
+				scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
+				scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
+				scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
+	        }
 		}
 	}
 

@@ -223,7 +223,7 @@ public class ArcInspectorFactory {
 
             @Override
             public int getMaximumSpeed() {
-                return 5;
+                return 20;
             }
 
             @Override
@@ -255,7 +255,7 @@ public class ArcInspectorFactory {
 
             @Override
             public int getMaximumSpeed() {
-                return 5;
+                return 20;
             }
 
             @Override
