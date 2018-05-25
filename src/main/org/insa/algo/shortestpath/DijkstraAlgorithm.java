@@ -66,8 +66,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		double oldCost, newCost;
 		int iteration = 0;
 		int nombredejeannedarc = 0;
+		int nodesNb = 0;
 
-		//Loop while all the nodes are not marked
+		//Loop while all the nodes are not marked or we find the destination
 		while(stillExistNotMarked) {
 			iteration++;
 			stillExistNotMarked = false;
@@ -76,6 +77,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				x = lx.getNode();
 				notifyNodeMarked(x);
 				lx.setMarked(true);
+				nodesNb ++;
 				//System.out.println("We are at node id =" + lx.getNode().getId());
 				//System.out.println(lx.getCout());
 
@@ -99,11 +101,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 						}
 					}
 				}
-				for (Node node: graph) {
-					if (!marks[node.getId()].isMarked()) {
-						stillExistNotMarked = true;
-						break;
-					}
+				if ((x.equals(data.getDestination())) || (nodesNb >= nbNodes)) {
+					stillExistNotMarked = false;
+				} else {
+					stillExistNotMarked = true;
 				}
 			}
 

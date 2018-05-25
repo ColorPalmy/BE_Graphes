@@ -38,14 +38,14 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     
     @Override
 	protected double conditionCost(Label ly, Label lx, Arc arc, ShortestPathData data) {
-    	if (ly.getCout() == lx.getCout()) {
-    		if (((LabelStar)ly).getCoutToDest() < (((LabelStar)lx).getCoutToDest() + data.getCost(arc))) {
-    			return ly.getCout();
-    		} else {
-    			return lx.getCout()+ data.getCost(arc);
-    		}
-//    		return Math.min(((LabelStar)ly).getCoutToDest(), ((LabelStar)lx).getCoutToDest() + data.getCost(arc));
-    	}
+//    	if (ly.getCout() == lx.getCout()) {
+//    		if (((LabelStar)ly).getCoutToDest() < (((LabelStar)lx).getCoutToDest() + data.getCost(arc))) {
+//    			return ly.getCout();
+//    		} else {
+//    			return lx.getCout()+ data.getCost(arc);
+//    		}
+////    		return Math.min(((LabelStar)ly).getCoutToDest(), ((LabelStar)lx).getCoutToDest() + data.getCost(arc));
+//    	}
 		return Math.min(ly.getCout(), lx.getCout() + data.getCost(arc));
 	}
     
@@ -86,8 +86,9 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         LabelStar lx;
         LabelStar ly;
         double oldCost, newCost;
+        int nodesNb = 0;
 
-        //Loop while all the nodes are not marked
+        //Loop while all the nodes are not marked or we find the destination
         while(stillExistNotMarked) {
             stillExistNotMarked = false;
             if (!tas.isEmpty()) {
@@ -95,6 +96,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                 x = lx.getNode();
                 notifyNodeMarked(x);
                 lx.setMarked(true);
+                nodesNb ++;
                 //System.out.println("We are at node id =" + lx.getNode().getId());
                 //System.out.println(lx.getCout());
 
@@ -118,12 +120,11 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                         }
                     }
                 }
-                for (Node node: graph) {
-                    if (!marks[node.getId()].isMarked()) {
-                        stillExistNotMarked = true;
-                        break;
-                    }
-                }
+				if ((x.equals(data.getDestination())) || (nodesNb >= nbNodes)) {
+					stillExistNotMarked = false;
+				} else {
+					stillExistNotMarked = true;
+				}
             }
 
         }
