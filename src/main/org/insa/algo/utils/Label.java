@@ -52,8 +52,12 @@ public class Label implements Comparable<Label> {
 		return cout;
 	}
 
+	public int comparison(Label o) {
+		return Double.compare(this.getTotalCost(), o.getTotalCost());
+	}
+	
 	@Override
 	public int compareTo(Label o) {
-		return Double.compare(this.getTotalCost(), o.getTotalCost());
+		return comparison(o);
 	}
 }

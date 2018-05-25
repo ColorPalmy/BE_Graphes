@@ -26,16 +26,21 @@ public class LabelStar extends Label {
 
 	@Override
 	public double getTotalCost() {
-//		if (!Double.isInfinite(this.cout)) {
-//			return this.cout + this.coutToDest;
-//		} else {
-//			return this.cout;
-//		}
 		return this.cout + this.coutToDest;
 	}
 	
 //	@Override
+//	public int comparison(Label o) {
+//	if (Double.compare(this.getTotalCost(), o.getTotalCost()) == 0) {
+//		System.out.println("labelstar");
+//		return Double.compare(this.getCoutToDest(),  ((LabelStar)o).getCoutToDest());
+//	}
+//	return Double.compare(this.getTotalCost(), o.getTotalCost());
+//	}
+	
+//	@Override
 //	public int compareTo(Label o) {
+//		System.out.println("labelStar");
 //		if (Double.compare(this.getCout(), o.getCout()) == 0) {
 //			return Double.compare(this.getCoutToDest(),  ((LabelStar)o).getCoutToDest());
 //		}
