@@ -180,8 +180,7 @@ public class ArcInspectorFactory {
 
             @Override
             public double getCost(Arc arc) {
-                return arc.getTravelTime(
-                        Math.min(getMaximumSpeed(), arc.getRoadInformation().getMaximumSpeed()));
+                return arc.getLength();
             }
 
             @Override
@@ -244,8 +243,7 @@ public class ArcInspectorFactory {
 
             @Override
             public double getCost(Arc arc) {
-                return arc.getTravelTime(
-                        Math.min(getMaximumSpeed(), arc.getRoadInformation().getMaximumSpeed()));
+                return arc.getLength();
             }
 
             @Override

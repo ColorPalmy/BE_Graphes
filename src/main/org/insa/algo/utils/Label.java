@@ -53,7 +53,7 @@ public class Label implements Comparable<Label> {
 	}
 
 	public int comparison(Label o) {
-		return Double.compare(this.getTotalCost(), o.getTotalCost());
+		return (int)Math.signum(this.getTotalCost() - o.getTotalCost());
 	}
 	
 	@Override
