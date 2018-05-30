@@ -146,16 +146,19 @@ public abstract class ValidityTest {
 		files[1][1] = "haute-garonne.mapgr";
 		files[2][0] = "path_fr31_insa_bikini_canal.path";
 		files[2][1] = "haute-garonne.mapgr";
-		files[3][0] = "path_fr31insa_rangueil_insa.path";
-		files[3][1] = "insa.mapgr";
-		files[4][0] = "path_fr31insa_rangueil_r2.path";
-		files[4][1] = "insa.mapgr";
 		//chemin uniquement voiture
-		files[5][0] = "path_fr31_highway_152765_152762.path";
-		files[5][1] = "haute-garonne.mapgr";
+		files[3][0] = "path_fr31_highway_152765_152762.path";
+		files[3][1] = "haute-garonne.mapgr";
 		//chemins uniquement piétons
-		files[6][0] = "path_fr31_pedestrian_39847_39843.path";
-		files[6][1] = "haute-garonne.mapgr";
+		files[4][0] = "path_fr31_pedestrian_39847_39843.path";
+		files[4][1] = "haute-garonne.mapgr";
+		
+		files[5][0] = "path_fr31insa_rangueil_insa.path";
+		files[5][1] = "insa.mapgr";
+		files[6][0] = "path_fr31insa_rangueil_r2.path";
+		files[6][1] = "insa.mapgr";
+
+		//chemins uniquement piétons
 		files[7][0] = "path_frn_pedestrian_609543_360479.path";
 		files[7][1] = "midi-pyrenees.mapgr";
 		files[8][0] = "path_frn_pedestrian_214906_436038.path";
@@ -179,7 +182,56 @@ public abstract class ValidityTest {
 		files[15][1] = "midi-pyrenees.mapgr";
 		files[16][0] = "BC_foot_path_frn_154982_293387.path";
 		files[16][1] = "midi-pyrenees.mapgr";
-
+		
+		files[17][0] = "path_frn_446860_590226.path";
+		files[17][1] = "midi-pyrenees.mapgr";
+		files[18][0] = "path_frn_590226_446860.path";
+		files[18][1] = "midi-pyrenees.mapgr";
+		files[19][0] = "path_frn_250708_146563.path";
+		files[19][1] = "midi-pyrenees.mapgr";
+		files[20][0] = "path_frn_146563_250708.path";
+		files[20][1] = "midi-pyrenees.mapgr";
+		
+        String pathName;
+        String mapName  = path + "\\maps\\" + "haute-garonne.mapgr";
+        
+		for (int i = 0; i<7; i++) {
+			pathName = path + "\\paths_perso\\" + files[i][0];
+			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
+			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
+			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
+			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
+			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
+			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
+		}
+		
+		mapName  = path + "\\maps\\" + "insa.mapgr";
+		pathName = path + "\\paths_perso\\" + "path_fr31insa_rangueil_insa.path";
+		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
+		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
+		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
+		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
+		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
+		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
+		
+		pathName = path + "\\paths_perso\\" + "path_fr31insa_rangueil_r2.path";
+		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
+		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
+		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
+		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
+		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
+		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
+		
+		mapName  = path + "\\maps\\" + "midi-pyrenees.mapgr";
+		for (int i = 7; i<21; i++) {
+			pathName = path + "\\paths_perso\\" + files[i][0];
+			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
+			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
+			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
+			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
+			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
+			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
+		}
 		
 //		for(String[] file : files) {
 //	        String pathName = path + "\\paths_perso\\" + file[0];
@@ -202,38 +254,7 @@ public abstract class ValidityTest {
 //				scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
 //	        }
 //		}        
-		String mapName  = path + "\\maps\\" + "midi-pyrenees.mapgr";
-        String pathName = path + "\\paths_perso\\" + "path_frn_446860_590226.path";
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
-		
-        pathName = path + "\\paths_perso\\" + "path_frn_590226_446860.path";
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
-		
-        pathName = path + "\\paths_perso\\" + "path_frn_250708_146563.path";
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
-		
-        pathName = path + "\\paths_perso\\" + "path_frn_146563_250708.path";
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
-		scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
-		scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
+
 		
 		
 	}

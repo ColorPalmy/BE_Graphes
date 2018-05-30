@@ -10,6 +10,7 @@ import org.insa.algo.utils.Label;
 import org.insa.algo.utils.LabelStar;
 import org.insa.graph.Arc;
 import org.insa.graph.Graph;
+import org.insa.graph.GraphStatistics;
 import org.insa.graph.Node;
 import org.insa.graph.Path;
 
@@ -30,22 +31,18 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     	if (data.getMode() == Mode.LENGTH) {
     		return new LabelStar(node, coutToDest);
     	} else if (data.getMode() == Mode.TIME) {
-            //cost in travel time (in sec) at the speed of 130 km/h
-    		return new LabelStar(node, coutToDest/36.1);
+            //cost in travel time (in sec) at the maximum speed
+    		if (data.getMaximumSpeed() == GraphStatistics.NO_MAXIMUM_SPEED) {
+    			return new LabelStar(node, coutToDest/(130/3.6));
+    		} else {
+        		return new LabelStar(node, coutToDest/(data.getMaximumSpeed()/3.6));
+    		}
     	}
     	return new LabelStar(node, coutToDest);
 	}
     
     @Override
 	protected double conditionCost(Label ly, Label lx, Arc arc, ShortestPathData data) {
-//    	if (ly.getCout() == lx.getCout()) {
-//    		if (((LabelStar)ly).getCoutToDest() < (((LabelStar)lx).getCoutToDest() + data.getCost(arc))) {
-//    			return ly.getCout();
-//    		} else {
-//    			return lx.getCout()+ data.getCost(arc);
-//    		}
-////    		return Math.min(((LabelStar)ly).getCoutToDest(), ((LabelStar)lx).getCoutToDest() + data.getCost(arc));
-//    	}
 		return Math.min(ly.getCout(), lx.getCout() + data.getCost(arc));
 	}
     
