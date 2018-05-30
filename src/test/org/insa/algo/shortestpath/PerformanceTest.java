@@ -3,6 +3,8 @@ package org.insa.algo.shortestpath;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalTime;
 
 import org.insa.algo.ArcInspectorFactory;
@@ -32,6 +34,7 @@ public abstract class PerformanceTest {
 		ShortestPathSolution s ;
 		for (int i = 0; i<3; i++) {
 			algo.doRun();
+			System.gc();
 		}
 		long start = System.currentTimeMillis();
 		s = algo.doRun();
@@ -41,8 +44,7 @@ public abstract class PerformanceTest {
 		return s;
 	}
 
-	public void scenarioTest(String mapName, String pathName, Mode mode, AccessMode accessMode) throws Exception {
-
+	private Graph createGraph(String mapName) throws IOException {
 		// Create a graph reader.
 		GraphReader reader = new BinaryGraphReader(
 				new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
@@ -52,6 +54,10 @@ public abstract class PerformanceTest {
 		//Read the graph.
 		Graph graph = reader.read();
 
+		return graph;
+	}
+
+	private Path createPath(String pathName, Graph graph) throws IOException {
 		//System.out.println("Graph Reading ended.");
 
 		//Create a PathReader.
@@ -61,6 +67,10 @@ public abstract class PerformanceTest {
 		//Read the path.
 		Path path = pathReader.readPath(graph);
 
+		return path;
+	}
+
+	public void scenarioTest(Graph graph, Path path, Mode mode, AccessMode accessMode) throws Exception {
 		//Create the scenario
 		Scenario scenario = new Scenario(accessMode, mode, graph, path.getOrigin(), path.getDestination());
 
@@ -127,16 +137,17 @@ public abstract class PerformanceTest {
 
 	public void algoIsEfficient() throws Exception {
 
-		//	String path = "B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes";
-		String path = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes";
+		//	String chemin = "B:\\Users\\remi\\eclipse-workspace\\MAPS_BE_Graphes";
+		String chemin = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes";
 
 
-		String[][] files = new String[5][2];
+/*		String[][] files = new String[5][2];
+
 		//Chemin court
-		files[0][0] = "short1path_fr_3863719_4100123.path";
-		files[0][1] = "france.mapgr";
-		files[1][0] = "path_fr31insa_rangueil_r2.path";
-		files[1][1] = "insa.mapgr";
+		files[0][0] = "path_fr31insa_rangueil_r2.path";
+		files[0][1] = "insa.mapgr";
+		files[1][0] = "short1path_fr_3863719_4100123.path";
+		files[1][1] = "france.mapgr";
 		//Chemin mi-long
 		files[2][0] = "midpath_fr_3965724_5916340.path";
 		files[2][1] = "france.mapgr";
@@ -146,21 +157,61 @@ public abstract class PerformanceTest {
 		//Chemin long: du milieu à un bout de la France
 		files[4][0] = "longhardpath_fr_2043086_6034662.path";
 		files[4][1] = "france.mapgr";
+*/
 
-
-
-
-		for(String[] file : files) {
-			String pathName = path + "\\paths_perso\\" + file[0];
-			String mapName  = path + "\\maps\\" + file[1];
-			System.out.println( "\n" + file[0] + " & " + file[1]);
-			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
-			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
-			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
-			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
-			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
-			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
-		}
+		String pathName = chemin + "\\paths_perso\\" + "path_fr31insa_rangueil_r2.path";
+		String mapName  = chemin + "\\maps\\" + "insa.mapgr";
+		System.out.println( "\n" + "path_fr31insa_rangueil_r2.path" + " & " + "insa.mapgr");
+		Graph graph = createGraph(mapName);
+		Path path = createPath(pathName, graph);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.MOTORCAR);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.MOTORCAR);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.FOOT);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.FOOT);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.BICYCLE);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.BICYCLE);
+		
+		mapName = chemin + "\\maps\\" + "france.mapgr";
+		graph = createGraph(mapName);
+		pathName = chemin + "\\paths_perso\\" + "short1path_fr_3863719_4100123.path";
+		System.out.println( "\n" + "short1path_fr_3863719_4100123.path" + " & " + "france.mapgr");
+		path = createPath(pathName, graph);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.MOTORCAR);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.MOTORCAR);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.FOOT);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.FOOT);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.BICYCLE);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.BICYCLE);
+		
+		pathName = chemin + "\\paths_perso\\" + "midpath_fr_3965724_5916340.path";
+		System.out.println( "\n" + "midpath_fr_3965724_5916340.path" + " & " + "france.mapgr");
+		path = createPath(pathName, graph);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.MOTORCAR);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.MOTORCAR);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.FOOT);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.FOOT);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.BICYCLE);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.BICYCLE);
+		
+		pathName = chemin + "\\paths_perso\\" + "longpath_fr_3126266_2529126.path";
+		System.out.println( "\n" + "longpath_fr_3126266_2529126.path" + " & " + "france.mapgr");
+		path = createPath(pathName, graph);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.MOTORCAR);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.MOTORCAR);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.FOOT);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.FOOT);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.BICYCLE);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.BICYCLE);
+		
+		pathName = chemin + "\\paths_perso\\" + "longhardpath_fr_2043086_6034662.path";
+		System.out.println( "\n" + "longhardpath_fr_2043086_6034662.path" + " & " + "france.mapgr");
+		path = createPath(pathName, graph);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.MOTORCAR);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.MOTORCAR);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.FOOT);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.FOOT);
+		scenarioTest(graph, path, Mode.TIME, AccessMode.BICYCLE);
+		scenarioTest(graph, path, Mode.LENGTH, AccessMode.BICYCLE);
 	}
 
 }
