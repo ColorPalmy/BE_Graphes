@@ -132,20 +132,22 @@ public abstract class PerformanceTest {
 
 
 		String[][] files = new String[5][2];
-		//Chemin long: d'un bout à l'autre de la France	
-		files[0][0] = "longpath_fr_3126266_2529126.path";
+		//Chemin court
+		files[0][0] = "short1path_fr_3863719_4100123.path";
 		files[0][1] = "france.mapgr";
-		//Chemin long: du milieu à un bout de la France
-		files[1][0] = "longhardpath_fr_2043086_6034662.path";
-		files[1][1] = "france.mapgr";
+		files[1][0] = "path_fr31insa_rangueil_r2.path";
+		files[1][1] = "insa.mapgr";
 		//Chemin mi-long
 		files[2][0] = "midpath_fr_3965724_5916340.path";
 		files[2][1] = "france.mapgr";
-		//Chemin court
-		files[3][0] = "short1path_fr_3863719_4100123.path";
+		//Chemin long: d'un bout à l'autre de la France	
+		files[3][0] = "longpath_fr_3126266_2529126.path";
 		files[3][1] = "france.mapgr";
-		files[4][0] = "path_fr31insa_rangueil_r2.path";
-		files[4][1] = "insa.mapgr";
+		//Chemin long: du milieu à un bout de la France
+		files[4][0] = "longhardpath_fr_2043086_6034662.path";
+		files[4][1] = "france.mapgr";
+
+
 
 
 		for(String[] file : files) {
