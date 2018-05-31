@@ -139,7 +139,8 @@ public abstract class ValidityTest {
 		String path = "C:\\Users\\linam\\Documents\\INSA\\3A\\2S\\BE_Graphes";
 		
 	
-		String[][] files = new String[17][2];
+		String[][] files = new String[21][2];
+		
 		files[0][0] = "path_fr31_insa_aeroport_length.path";
 		files[0][1] = "haute-garonne.mapgr";
 		files[1][0] = "path_fr31_insa_aeroport_time.path";
@@ -195,15 +196,15 @@ public abstract class ValidityTest {
         String pathName;
         String mapName  = path + "\\maps\\" + "haute-garonne.mapgr";
         
-		for (int i = 0; i<7; i++) {
-			pathName = path + "\\paths_perso\\" + files[i][0];
-			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
-			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
-			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
-			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
-			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
-			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
-		}
+//		for (int i = 0; i<5; i++) {
+//			pathName = path + "\\paths_perso\\" + files[i][0];
+//			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.MOTORCAR);
+//			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.MOTORCAR);
+//			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.FOOT);
+//			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.FOOT);
+//			scenarioTest(mapName, pathName, Mode.TIME, AccessMode.BICYCLE);
+//			scenarioTest(mapName, pathName, Mode.LENGTH, AccessMode.BICYCLE);
+//		}
 		
 		mapName  = path + "\\maps\\" + "insa.mapgr";
 		pathName = path + "\\paths_perso\\" + "path_fr31insa_rangueil_insa.path";
