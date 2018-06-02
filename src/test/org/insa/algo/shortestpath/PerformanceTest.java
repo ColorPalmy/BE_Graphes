@@ -32,10 +32,10 @@ public abstract class PerformanceTest {
 
 	private ShortestPathSolution solution (ShortestPathAlgorithm algo) {
 		ShortestPathSolution s ;
-		for (int i = 0; i<3; i++) {
-			algo.doRun();
-			System.gc();
-		}
+//		for (int i = 0; i<3; i++) {
+//			algo.doRun();
+//			System.gc();
+//		}
 		long start = System.currentTimeMillis();
 		s = algo.doRun();
 		long end = System.currentTimeMillis();
