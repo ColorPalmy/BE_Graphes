@@ -27,19 +27,19 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 
     @Override
 	protected LabelStar initLabel(Node node, ShortestPathData data) {
-    	double coutToDest = node.getPoint().distanceTo(data.getDestination().getPoint());
-    	if (data.getMode() == Mode.LENGTH) {
-    		return new LabelStar(node, coutToDest);
-    	} else if (data.getMode() == Mode.TIME) {
-            //cost in travel time (in sec) at the maximum speed
-    		if (data.getMaximumSpeed() == GraphStatistics.NO_MAXIMUM_SPEED) {
-    			return new LabelStar(node, coutToDest/(130/3.6));
-    		} else {
-        		return new LabelStar(node, coutToDest/(data.getMaximumSpeed()/3.6));
-    		}
-    	}
-    	return new LabelStar(node, coutToDest);
-//    	return new LabelStar(node, 0.0);
+//    	double coutToDest = node.getPoint().distanceTo(data.getDestination().getPoint());
+//    	if (data.getMode() == Mode.LENGTH) {
+//    		return new LabelStar(node, coutToDest);
+//    	} else if (data.getMode() == Mode.TIME) {
+//            //cost in travel time (in sec) at the maximum speed
+//    		if (data.getMaximumSpeed() == GraphStatistics.NO_MAXIMUM_SPEED) {
+//    			return new LabelStar(node, coutToDest/(130/3.6));
+//    		} else {
+//        		return new LabelStar(node, coutToDest/(data.getMaximumSpeed()/3.6));
+//    		}
+//    	}
+//    	return new LabelStar(node, coutToDest);
+    	return new LabelStar(node, 0.0);
 	}
     
     private double createCoutToDest(Node node, ShortestPathData data) {
@@ -115,9 +115,9 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
                         continue;
                     }
                     ly = marks[arc.getDestination().getId()];
-//                    if (ly.getCoutToDest() == 0.0) {
-//                    	ly.setCoutToDest(createCoutToDest(ly.getNode(), data));
-//                    }
+                    if (ly.getCoutToDest() == 0.0) {
+                    	ly.setCoutToDest(createCoutToDest(ly.getNode(), data));
+                    }
                     if (!ly.isMarked()) {
                         stillExistNotMarked = true;
                         oldCost = ly.getCout();

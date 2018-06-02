@@ -100,7 +100,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 						}
 					}
 				}
-				if ((x.equals(data.getDestination())) || (nodesNb >= nbNodes)) {
+//				if ((x.equals(data.getDestination())) || (nodesNb >= nbNodes)) {
+				if (x.equals(data.getDestination())) {
 					stillExistNotMarked = false;
 				} else {
 					stillExistNotMarked = true;
